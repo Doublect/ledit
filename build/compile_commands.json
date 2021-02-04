@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/build",
+  "command": "/usr/bin/cc  -I/mnt/nvme0n1p4/Personal/University/cs132/Coursework2 -g -std=gnu11 -o CMakeFiles/Coursework2.dir/Coursework2.c.o -c /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/Coursework2.c",
+  "file": "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/Coursework2.c"
+}
+]

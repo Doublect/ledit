@@ -1,0 +1,12 @@
+
+Terminal errors
+301 - Couldn't set terminal
+302 - Couldn't reset terminal
+
+File operations
+
+401 - Couldn't open file
+402 - Couldn't create file
+
+9000 - Quit
+9010 - Save

@@ -1,0 +1,1 @@
+/usr/bin/cc -g CMakeFiles/Coursework2.dir/Coursework2.c.o -o Coursework2 
