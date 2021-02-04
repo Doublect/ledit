@@ -4,9 +4,8 @@
 #include "Renderer.h"
 #include "Terminal.h"
 #include "Commands.h"
-#include "Reader.h"
-
-#define QUIT 9000
+#include "TextHandler.h"
+#include "definitions.h"
 
 int main(int argc, char *argv[]){
 
@@ -50,6 +49,8 @@ int main(int argc, char *argv[]){
             int signal = executeCommand();
 
             if(signal == QUIT) break;
+
+            if(signal == SAVE) writeFile(NULL, False);
 
             initializeCommands();
         } else {

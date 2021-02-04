@@ -67,7 +67,7 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/nvme0n1p4/Personal/University/cs132/Coursework2
+CMAKE_SOURCE_DIR = /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/build
@@ -142,6 +142,33 @@ Coursework2/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/build
 .PHONY : Coursework2/fast
 
+Commands.o: Commands.c.o
+
+.PHONY : Commands.o
+
+# target to build an object file
+Commands.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/Commands.c.o
+.PHONY : Commands.c.o
+
+Commands.i: Commands.c.i
+
+.PHONY : Commands.i
+
+# target to preprocess a source file
+Commands.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/Commands.c.i
+.PHONY : Commands.c.i
+
+Commands.s: Commands.c.s
+
+.PHONY : Commands.s
+
+# target to generate assembly for a file
+Commands.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/Commands.c.s
+.PHONY : Commands.c.s
+
 Coursework2.o: Coursework2.c.o
 
 .PHONY : Coursework2.o
@@ -169,6 +196,141 @@ Coursework2.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/Coursework2.c.s
 .PHONY : Coursework2.c.s
 
+FileIO.o: FileIO.c.o
+
+.PHONY : FileIO.o
+
+# target to build an object file
+FileIO.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/FileIO.c.o
+.PHONY : FileIO.c.o
+
+FileIO.i: FileIO.c.i
+
+.PHONY : FileIO.i
+
+# target to preprocess a source file
+FileIO.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/FileIO.c.i
+.PHONY : FileIO.c.i
+
+FileIO.s: FileIO.c.s
+
+.PHONY : FileIO.s
+
+# target to generate assembly for a file
+FileIO.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/FileIO.c.s
+.PHONY : FileIO.c.s
+
+Library.o: Library.c.o
+
+.PHONY : Library.o
+
+# target to build an object file
+Library.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/Library.c.o
+.PHONY : Library.c.o
+
+Library.i: Library.c.i
+
+.PHONY : Library.i
+
+# target to preprocess a source file
+Library.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/Library.c.i
+.PHONY : Library.c.i
+
+Library.s: Library.c.s
+
+.PHONY : Library.s
+
+# target to generate assembly for a file
+Library.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/Library.c.s
+.PHONY : Library.c.s
+
+Reader.o: Reader.c.o
+
+.PHONY : Reader.o
+
+# target to build an object file
+Reader.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/Reader.c.o
+.PHONY : Reader.c.o
+
+Reader.i: Reader.c.i
+
+.PHONY : Reader.i
+
+# target to preprocess a source file
+Reader.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/Reader.c.i
+.PHONY : Reader.c.i
+
+Reader.s: Reader.c.s
+
+.PHONY : Reader.s
+
+# target to generate assembly for a file
+Reader.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/Reader.c.s
+.PHONY : Reader.c.s
+
+Renderer.o: Renderer.c.o
+
+.PHONY : Renderer.o
+
+# target to build an object file
+Renderer.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/Renderer.c.o
+.PHONY : Renderer.c.o
+
+Renderer.i: Renderer.c.i
+
+.PHONY : Renderer.i
+
+# target to preprocess a source file
+Renderer.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/Renderer.c.i
+.PHONY : Renderer.c.i
+
+Renderer.s: Renderer.c.s
+
+.PHONY : Renderer.s
+
+# target to generate assembly for a file
+Renderer.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/Renderer.c.s
+.PHONY : Renderer.c.s
+
+Terminal.o: Terminal.c.o
+
+.PHONY : Terminal.o
+
+# target to build an object file
+Terminal.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/Terminal.c.o
+.PHONY : Terminal.c.o
+
+Terminal.i: Terminal.c.i
+
+.PHONY : Terminal.i
+
+# target to preprocess a source file
+Terminal.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/Terminal.c.i
+.PHONY : Terminal.c.i
+
+Terminal.s: Terminal.c.s
+
+.PHONY : Terminal.s
+
+# target to generate assembly for a file
+Terminal.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/Terminal.c.s
+.PHONY : Terminal.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -178,9 +340,27 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... Coursework2"
+	@echo "... Commands.o"
+	@echo "... Commands.i"
+	@echo "... Commands.s"
 	@echo "... Coursework2.o"
 	@echo "... Coursework2.i"
 	@echo "... Coursework2.s"
+	@echo "... FileIO.o"
+	@echo "... FileIO.i"
+	@echo "... FileIO.s"
+	@echo "... Library.o"
+	@echo "... Library.i"
+	@echo "... Library.s"
+	@echo "... Reader.o"
+	@echo "... Reader.i"
+	@echo "... Reader.s"
+	@echo "... Renderer.o"
+	@echo "... Renderer.i"
+	@echo "... Renderer.s"
+	@echo "... Terminal.o"
+	@echo "... Terminal.i"
+	@echo "... Terminal.s"
 .PHONY : help
 
 

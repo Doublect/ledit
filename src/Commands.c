@@ -5,10 +5,7 @@
 #include "Commands.h"
 #include "Terminal.h"
 #include "Renderer.h"
-
-
-#define QUIT 9000
-#define SAVE 9010
+#include "definitions.h"
 
 static char* command;
 static int capacity, length, cursor;
@@ -52,7 +49,14 @@ int executeCommand(){
     if(command[0] == ':'){
         int value = commands(command[1]);
 
-        if(value == QUIT) return QUIT;
+        switch (value) {
+            case QUIT:
+                return QUIT;
+
+            case SAVE:
+                return SAVE;
+        }
+
     }
 }
 

@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/FileIO.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+unistd.h
+-
+

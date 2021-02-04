@@ -1,17 +1,23 @@
 #include<stdio.h>
-#include "Terminal.h"
+#include <unistd.h>
+//#include "Terminal.h"
 //#include "Library.h"
-#include "unistd.h"
-//#include <stdlib.h>
-#include "Reader.h"
+#include <stdlib.h>
+//#include "Reader.h"
 
 int main(int argc, char *argv[]) {
-    setTerminal();
+    //setTerminal();
 
-    if(argc == 2)
-        readFile(argv[1]);
+    if(argc == 2) {
+        //readFile(argv[1]);
+        FILE *fptr = fopen(argv[1], "r");
+        char *string = malloc(sizeof (char )*1024);
+        while(fgets(string, 1024, fptr) != NULL){
+            printf("%s", string);
+        }
+    }
 
-
+    putchar('\n');
     /*while (1) {
         char c;
         read(STDIN_FILENO, &c, 1);
@@ -34,7 +40,7 @@ int main(int argc, char *argv[]) {
         printf("%c %d\n", c, c);
     }*/
 
-    resetTerminal();
+    //resetTerminal();
 
     return 0;
 }

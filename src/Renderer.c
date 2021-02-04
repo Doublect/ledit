@@ -4,7 +4,7 @@
 //#include "Renderer.h"
 #include "Terminal.h"
 #include "Library.h"
-#include "Reader.h"
+#include "TextHandler.h"
 
 static int screenX = 0, screenY = 0;
 static int commandX = 0;

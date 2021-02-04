@@ -3,6 +3,8 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "definitions.h"
+
 //Returns contents of a textfile
 //filecontents is a array which stores the pointers to the line beginnings, we want to return this, so filecontentsptr is a pointer to an array of pointers
 int readTextFile(char *filepath, char *(*(*filecontentsptr)), int *fileContentsCapacity, int *linecount, int **linelength, int **linecapacity){
@@ -51,13 +53,13 @@ int readTextFile(char *filepath, char *(*(*filecontentsptr)), int *fileContentsC
     // Stores which line the process ar
     int i = 0;
     // Stores the length of the given line
-    int j = 0;
+    int j = 1;
 
     // Count line length
     while((c = fgetc(fptr)) != EOF){
         if(c == '\n' || c == '\0'){
             (*linelength)[i] = j;
-            j = 0;
+            j = 1;
             i++;
         } else {
             j++;
@@ -67,25 +69,26 @@ int readTextFile(char *filepath, char *(*(*filecontentsptr)), int *fileContentsC
     fclose(fptr);
     fptr = fopen(filepath, "r");
 
-    // Stores the length of the given line
-    j = 0;
-
-    for(int i = 0; i < *linecount; i++){
-        (*linecapacity)[i] = (((*linelength)[i] / 16) + 1) * 16;
-        char* string = malloc(sizeof(char) * (*linecapacity)[i]);
+    for(int k = 0; k < *linecount; k++){
+        (*linecapacity)[k] = (((*linelength)[k] / 16) + 1) * 16;
+        char* string = malloc(sizeof(char) * (*linecapacity)[k]);
 
         //fread(string, sizeof(char), (*linelength)[i], fptr);
-        fgets(string, (*linelength)[i] + 1, fptr);
+        if(fgets(string, (*linecapacity)[k], fptr) == NULL){
+            break;
+        }
 
+        //fscanf(fptr, )
         //getline(&string, &(*linelength)[i], fptr);
         // Remove \n from input
         //fgetc(fptr);
 
-        string[(*linelength)[i]] = '\0';
+        // Replace all new line with 0
+        string[strcspn(string, "\n")] = 0;
 
         //printf("%s\n\r", string);
 
-        (*filecontentsptr)[i] = string;
+        (*filecontentsptr)[k] = string;
     }
 
     fclose(fptr);
@@ -94,25 +97,44 @@ int readTextFile(char *filepath, char *(*(*filecontentsptr)), int *fileContentsC
 }
 
 
-int writeTextFile(char *filepath, char *filecontentsptr[], int linecount, int **linelength){
+int writeTextFile(char *filepath, char *(*(*filecontentsptr)), int *fileContentsCapacity, int *linecount, int **linelength, int **linecapacity, int unload){
     FILE *fptr;
 
     fptr = fopen(filepath, "w");
 
     
     if(fptr == NULL){ //Can't create file
+        fprintf(stderr,"ERROR 402");
         return 402;
     }
 
-    for(int linenum = 0; linenum < linecount; linenum++){
+    for(int linenum = 0; linenum < *linecount; linenum++){
 
-        //print line
-        fprintf(fptr, "%s\n", filecontentsptr[linenum]);
+        // Output the line
+        fprintf(fptr, "%s\n", (*filecontentsptr)[linenum]);
 
-        //free string in filecontent
-        free(filecontentsptr[linenum]);
+        if(unload == True)
+        {
+            // Free string
+            free((*filecontentsptr)[linenum]);
+        }
     }
 
-    free(*linelength); //free the array of linelength
-    free(filecontentsptr); //free array holding strings
+    if(unload == True) {
+        free(*filecontentsptr); // Free array holding strings
+        free(filecontentsptr); // Free pointer to the array of strings
+
+        free(fileContentsCapacity);
+
+        free(linecount);
+
+        free(*linelength); // Free the array of linelength
+        free(linelength); // Free the pointer to linelength array
+
+
+        free(*linecapacity);
+        free(linecapacity);
+    }
+
+    return 0;
 }

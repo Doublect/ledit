@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Commands.h
+
+/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Coursework2.c
+stdio.h
+-
+unistd.h
+-
+Renderer.h
+/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Renderer.h
+Terminal.h
+/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Terminal.h
+Commands.h
+/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Commands.h
+Reader.h
+/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Reader.h
+definitions.h
+/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/definitions.h
+
+/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Reader.h
+
+/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Renderer.h
+
+/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Terminal.h
+
+/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/definitions.h
+
