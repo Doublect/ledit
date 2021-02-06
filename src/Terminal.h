@@ -2,7 +2,6 @@
 #define COURSEWORK2_TERMINAL_H
 
 int setTerminal();
-int resetTerminal();
 int quit();
 int getTerminalColumns();
 int getTerminalRows();

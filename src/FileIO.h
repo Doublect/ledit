@@ -5,7 +5,7 @@
 #ifndef COURSEWORK2_FILEIO_H
 #define COURSEWORK2_FILEIO_H
 
-int readTextFile(char *filepath, char *(*(*filecontentsptr)), int *fileContentsCapacity, int *linecount, int **linelength, int **linecapacity);
-int writeTextFile(char *filepath, char *(*(*filecontentsptr)), int *fileContentsCapacity, int *linecount, int **linelength, int **linecapacity);
+int readTextFile(char *filepath, char *(*(*filecontentsptr)), long *fileContentsCapacity, long *linecount, long **linelength, long **linecapacity);
+int writeTextFile(char *filepath, char *(*(*filecontentsptr)), long *fileContentsCapacity, long *linecount, long **linelength, long **linecapacity);
 
 #endif //COURSEWORK2_FILEIO_H

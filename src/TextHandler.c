@@ -10,16 +10,16 @@
 #include "definitions.h"
 
 static char *filePath;
-static int *lineLength, *lineCapacity; //stores the positions of lines on screen
-static int lineCount, fileContentsCapacity;
+static long *lineLength, *lineCapacity; //stores the positions of lines on screen
+static long lineCount, fileContentsCapacity;
 static char **fileContents;
 
 static char empty = '\0'; // Empty string
 
-void changeCapacity(int delta);
-void changeLineCount(int delta);
+void changeCapacity(long delta);
+void changeLineCount(long delta);
 
-char *getLine(int pos, int offset){
+char *getLine(long pos, long offset){
 
     if(fileContentsCapacity > pos && offset < lineLength[pos] && lineCount > pos) {
         //printf("%d-%d\n\r", offset, lineLength[pos]);
@@ -37,7 +37,7 @@ void readFile(char *path){
 // Returns a line if it is possible, else returns null pointer
 
 void unloadFileContents(){
-    for(int linenum = 0; linenum < lineCount; linenum++){
+    for(long linenum = 0; linenum < lineCount; linenum++){
         // Free strings
         free(fileContents[linenum]);
     }
@@ -72,14 +72,10 @@ void writeFile(char *path, int bunload){
     }
 }
 
-void getLineContent(char *path, int *linecount, int *maxline){
-
-}
-
-void setLine(char *string, int pos){
+void setLine(char *string, long pos){
 
     if(fileContentsCapacity < pos){
-        int delta = (((pos - fileContentsCapacity) / 32) + 1) * 32;
+        long delta = (((pos - fileContentsCapacity) / 32) + 1) * 32;
         changeCapacity(delta);
     }
 
@@ -91,11 +87,11 @@ void setLine(char *string, int pos){
 
     fileContents[pos - 1] = string;
 
-    lineLength[pos - 1] = (int)len;
-    lineCapacity[pos - 1] =  (int)len;
+    lineLength[pos - 1] = (long)len;
+    lineCapacity[pos - 1] =  (long)len;
 }
 
-void changeCapacity(int delta) {
+void changeCapacity(long delta) {
     if(delta == 0) return;
 
     // Make sure we don't have negative number of lines
@@ -105,13 +101,20 @@ void changeCapacity(int delta) {
 
     char **newfileContents = calloc(fileContentsCapacity + delta, sizeof(char *));
 
-
     // Copy over the lines, make sure to only copy the number of elements we need
-    int copyAmount = ((delta < 0) ? fileContentsCapacity + delta : fileContentsCapacity);
-    memcpy(newfileContents, fileContents, copyAmount);
+    long copyAmount = (((fileContentsCapacity + delta) < lineCount) ? fileContentsCapacity + delta : lineCount);
+    //memcpy(*newfileContents, *fileContents, copyAmount);
+    for(long i = 0; i < lineCount; i++){
+        newfileContents[i] = fileContents[i];
+    }
+
+    // Free strings which are less than the copied
+    for(long i = lineCount; lineCount < copyAmount; i++){
+        free(fileContents[i]);
+    }
 
     // Free current fileContents
-    unloadFileContents();
+    free(fileContents);
 
     // Update pointer
     fileContents = newfileContents;
@@ -121,24 +124,28 @@ void changeCapacity(int delta) {
 }
 
 
-void changeLineCount(int delta) {
+void changeLineCount(long delta) {
     if(lineCount + delta < 0) {
         delta = -lineCount;
     }
 
-    int *newlineCapacity = calloc(lineCount + delta, sizeof(int));
-    int *newlineLength = calloc(lineCount + delta, sizeof(int));
+    long *newlineCapacity = calloc(lineCount + delta, sizeof(long));
+    long *newlineLength = calloc(lineCount + delta, sizeof(long));
 
-    int copyAmount = ((delta < 0) ? lineCount + delta : lineCount);
+    long copyAmount = ((delta < 0) ? lineCount + delta : lineCount);
 
-    memcpy(newlineCapacity, lineCapacity, copyAmount);
-    memcpy(newlineLength, lineLength, copyAmount);
+    //memcpy(newlineCapacity, lineCapacity, copyAmount);
+    //memcpy(newlineLength, lineLength, copyAmount);
+    for(long i = 0; i < copyAmount; i++){
+      newlineCapacity[i] = lineCapacity[i];
+      newlineLength[i] = lineLength[i];
+    }
 
     free(lineCapacity);
     free(lineLength);
 
     lineCapacity = newlineCapacity;
-    lineLength = newlineCapacity;
+    lineLength = newlineLength;
 
     lineCount += delta;
 }

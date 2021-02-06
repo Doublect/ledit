@@ -57,8 +57,8 @@ int setTerminal(){
     return 0;
 }
 
+///Restore original terminal settings
 int resetTerminal(){
-    // Restore terminal settings
     tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
 
     return 0;

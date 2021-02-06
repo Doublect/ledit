@@ -15,7 +15,7 @@ int main(int argc, char *argv[]){
     if(setTerminal() != 0)
         return 301;
         
-    setvbuf(stdout, NULL, _IONBF, 0);
+    //setvbuf(stdout, NULL, _IONBF, 0);
 
     clearScreen();
 

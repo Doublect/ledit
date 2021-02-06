@@ -7,7 +7,7 @@
 
 //Returns contents of a textfile
 //filecontents is a array which stores the pointers to the line beginnings, we want to return this, so filecontentsptr is a pointer to an array of pointers
-int readTextFile(char *filepath, char *(*(*filecontentsptr)), int *fileContentsCapacity, int *linecount, int **linelength, int **linecapacity){
+int readTextFile(char *filepath, char *(*(*filecontentsptr)), long *fileContentsCapacity, long *linecount, long **linelength, long **linecapacity){
     FILE *fptr;
 
     fptr = fopen(filepath, "r");
@@ -39,8 +39,8 @@ int readTextFile(char *filepath, char *(*(*filecontentsptr)), int *fileContentsC
 
     // Allocate array for storing the strings and their length
     *filecontentsptr = calloc(*fileContentsCapacity, sizeof(char *));
-    *linelength = calloc(*fileContentsCapacity, sizeof(int));
-    *linecapacity = calloc(*fileContentsCapacity, sizeof(int));
+    *linelength = calloc(*fileContentsCapacity, sizeof(long));
+    *linecapacity = calloc(*fileContentsCapacity, sizeof(long));
 
     (*filecontentsptr)[(*linecount)] = NULL;
     (*linelength)[(*linecount)] = -1;
@@ -50,10 +50,10 @@ int readTextFile(char *filepath, char *(*(*filecontentsptr)), int *fileContentsC
     fclose(fptr);
     fptr = fopen(filepath, "r");
 
-    // Stores which line the process ar
-    int i = 0;
+    // Stores which line the process is on
+    long i = 0;
     // Stores the length of the given line
-    int j = 1;
+    long j = 1;
 
     // Count line length
     while((c = fgetc(fptr)) != EOF){
@@ -69,7 +69,7 @@ int readTextFile(char *filepath, char *(*(*filecontentsptr)), int *fileContentsC
     fclose(fptr);
     fptr = fopen(filepath, "r");
 
-    for(int k = 0; k < *linecount; k++){
+    for(long k = 0; k < *linecount; k++){
         (*linecapacity)[k] = (((*linelength)[k] / 16) + 1) * 16;
         char* string = malloc(sizeof(char) * (*linecapacity)[k]);
 
@@ -97,7 +97,7 @@ int readTextFile(char *filepath, char *(*(*filecontentsptr)), int *fileContentsC
 }
 
 
-int writeTextFile(char *filepath, char *(*(*filecontentsptr)), int *fileContentsCapacity, int *linecount, int **linelength, int **linecapacity){
+int writeTextFile(char *filepath, char *(*(*filecontentsptr)), long *fileContentsCapacity, const long *linecount, long **linelength, long **linecapacity){
     FILE *fptr;
 
     fptr = fopen(filepath, "w");
@@ -108,7 +108,7 @@ int writeTextFile(char *filepath, char *(*(*filecontentsptr)), int *fileContents
         return 402;
     }
 
-    for(int linenum = 0; linenum < *linecount; linenum++){
+    for(long linenum = 0; linenum < *linecount; linenum++){
         // Output the line
         fprintf(fptr, "%s\n", (*filecontentsptr)[linenum]);
     }
