@@ -72,7 +72,7 @@ void writeFile(char *path, int bunload){
     }
 }
 
-void setLine(char *string, long pos){
+void setLine(char *string, long pos, long len){
 
     if(fileContentsCapacity < pos){
         long delta = (((pos - fileContentsCapacity) / 32) + 1) * 32;
@@ -83,7 +83,8 @@ void setLine(char *string, long pos){
         changeLineCount(pos);
     }
 
-    unsigned long len = strlen(string);
+    if(len == -1)
+        len = strlen(string);
 
     fileContents[pos - 1] = string;
 
@@ -91,6 +92,19 @@ void setLine(char *string, long pos){
     lineCapacity[pos - 1] =  (long)len;
 }
 
+void swapLines(long posA, long posB){
+    if(posA == posB) return;
+
+    if(!(posA > 0 && posB > 0 && posA < lineCount && posB < lineCount)) return;
+
+    long tempLineCapacity = lineCapacity[posA - 1];
+    long tempLineLength = lineLength[posA - 1];
+    char *tempLine = fileContents[posA - 1];
+
+    setLine(fileContents[posB - 1], posA, lineLength[posB - 1]);
+    setLine(tempLine, posB, tempLineLength);
+
+}
 void changeCapacity(long delta) {
     if(delta == 0) return;
 

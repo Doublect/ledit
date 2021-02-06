@@ -14,6 +14,7 @@ static int capacity, length, cursor;
 
 char *parseArgument(char **string, int spaceSeparated);
 int doSet(char *pointer);
+int doSwap(char *pointer);
 
 void initializeCommands(){
     // Make sure command is a null pointer
@@ -33,9 +34,10 @@ void initializeCommands(){
     clearLine();
 }
 
-int commands(char c){
+int commands(){
+    char first = command[1];
 
-    switch (c) {
+    switch (first) {
         case 'w':
             return SAVE;
 
@@ -49,6 +51,8 @@ int commands(char c){
             return 0;
 
         case 's':
+            if(length > 1 && command[2] == 'w')
+                return SWAP;
             return SET;
 
         default:
@@ -58,7 +62,7 @@ int commands(char c){
 
 int executeCommand(){
     if(command[0] == ':'){
-        int value = commands(command[1]);
+        int value = commands();
 
         switch (value) {
             case QUIT:
@@ -71,7 +75,8 @@ int executeCommand(){
             case SET:
                 return doSet(&command[3]);
 
-
+            case SWAP:
+                return doSwap(&command[4]);
         }
 
     }
@@ -180,24 +185,22 @@ char *parseArgument(char **string, int spaceSeparated){
         return NULL;
     }
 
-    int arglen;
-    char *arg;
-
+    long arglen = 0;
     if(spaceSeparated){
-        arglen = strcspn(*string, " \n\r\0") + 1;
-
-        arg = malloc(sizeof(char) * arglen);
+        arglen += strcspn(*string, " \n\r\0");
     } else {
-        arglen = strlen(*string) + 1;
-
-        arg = malloc(sizeof(char) * arglen);
+        arglen += strlen(*string) + 1;
     }
+
+    char *arg = malloc(sizeof(char) * arglen);
 
     memccpy(arg, *string, sizeof(char), arglen);
 
     arg[arglen] = '\0';
 
-    // Move the command string, so it will be possible to parse next argument afterwards
+    //printf("'%s'\n", arg);
+
+    // Move the command pointer, so it will be possible to parse next argument afterwards
     (*string) += arglen;
 
     return arg;
@@ -207,17 +210,33 @@ int doSet(char *pointer){
 
     // Get the pos of the line which needs changing
     char *pos = parseArgument(&pointer, True);
-    if(!isNumberStr) return NOTINTWARN;
+    //printf("%d\n", isNumberStr(pos));
+    if(!isNumberStr(pos)) return NOTNUMWARN;
     int lineNum = strtoint(pos);
 
     // Get the actual content of the line
     char *line = parseArgument(&pointer, False);
 
     // Change the stored text values
-    setLine(line, lineNum);
+    setLine(line, lineNum, -1);
 
     // Update rendered text
     printTextLines();
+
+    return 0;
+}
+
+int doSwap(char *pointer){
+    // Get the pos of the line which needs changing
+    char *posA = parseArgument(&pointer, True);
+    char *posB = parseArgument(&pointer, True);
+
+    //printf("'%s' '%s'\n", posA, posB);
+
+    if(!(isNumberStr(posA) && isNumberStr(posB))) return NOTNUMWARN;
+
+
+    swapLines(strtolong(posA), strtolong(posB));
 
     return 0;
 }

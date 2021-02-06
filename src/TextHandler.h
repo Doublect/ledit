@@ -2,8 +2,9 @@
 #define COURSEWORK2_READER_H
 
 void readFile(char *path);
-char *getLine(int pos, int offset);
+char *getLine(long pos, long offset);
 void writeFile(char *path, int bunload);
-void setLine(char *string, int pos);
+void setLine(char *string, long pos, long len);
+void swapLines(long posA, long posB);
 
 #endif //COURSEWORK2_READER_H

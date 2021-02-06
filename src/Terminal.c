@@ -153,7 +153,6 @@ void WINCHSignal(int signal){
 
 // TODO: Handle exit signals
 void SIGINTSignal(int signal){
-    printf("Hello\n");
     return;
 }
 

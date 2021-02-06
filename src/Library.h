@@ -5,6 +5,8 @@ void msleep(int milliseconds);
 int isNumber(char c);
 int isNumberStr(char *c);
 int strtoint(char *str);
+long strtolong(char *str);
 int intsize(int x);
+long longsize(long x);
 
 #endif //COURSEWORK2_LIBRARY_H

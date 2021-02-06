@@ -21,7 +21,6 @@ int main(int argc, char *argv[]){
 
     printHeadLine();
 
-    //moveCursor('B');
     printf("\r");
 
     printTextLines();
@@ -51,11 +50,10 @@ int main(int argc, char *argv[]){
             if(signal == QUIT) break;
 
             initializeCommands();
+            redrawScreen();
         } else {
             insertCharacter(c[0]);
         }
-
-        //redrawScreen();
     }
 
     quit();
