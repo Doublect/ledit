@@ -12,6 +12,8 @@
 //#include <unistd.h> // for usleep
 //#endif
 
+#include "definitions.h"
+
 //https://stackoverflow.com/a/28827188
 void msleep(int milliseconds){ // cross-platform sleep function
 //#ifdef WIN32
@@ -38,9 +40,18 @@ void strprint(char * str){
 
 int isNumber(char c){
     if(c >= '0' && c <= '9'){
-        return 0;
+        return False;
     }
-    return 1;
+    return True;
+}
+
+int isNumberStr(char *c){
+    for(; *c; c++){
+        if(!isNumber(*c)){
+            return False;
+        }
+    }
+    return True;
 }
 
 //Limited to size 10, because of int

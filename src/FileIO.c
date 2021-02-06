@@ -97,7 +97,7 @@ int readTextFile(char *filepath, char *(*(*filecontentsptr)), int *fileContentsC
 }
 
 
-int writeTextFile(char *filepath, char *(*(*filecontentsptr)), int *fileContentsCapacity, int *linecount, int **linelength, int **linecapacity, int unload){
+int writeTextFile(char *filepath, char *(*(*filecontentsptr)), int *fileContentsCapacity, int *linecount, int **linelength, int **linecapacity){
     FILE *fptr;
 
     fptr = fopen(filepath, "w");
@@ -109,32 +109,11 @@ int writeTextFile(char *filepath, char *(*(*filecontentsptr)), int *fileContents
     }
 
     for(int linenum = 0; linenum < *linecount; linenum++){
-
         // Output the line
         fprintf(fptr, "%s\n", (*filecontentsptr)[linenum]);
-
-        if(unload == True)
-        {
-            // Free string
-            free((*filecontentsptr)[linenum]);
-        }
     }
 
-    if(unload == True) {
-        free(*filecontentsptr); // Free array holding strings
-        free(filecontentsptr); // Free pointer to the array of strings
-
-        free(fileContentsCapacity);
-
-        free(linecount);
-
-        free(*linelength); // Free the array of linelength
-        free(linelength); // Free the pointer to linelength array
-
-
-        free(*linecapacity);
-        free(linecapacity);
-    }
+    fclose(fptr);
 
     return 0;
 }

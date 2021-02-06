@@ -9,7 +9,7 @@ void clearLine();
 void printExitQuestion();
 void abortExit();
 void printHeadLine();
-void printLineNumbers();
+void printTextLines();
 void printStatusLine(char* command);
 void redrawScreen();
 

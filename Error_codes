@@ -8,5 +8,8 @@ File operations
 401 - Couldn't open file
 402 - Couldn't create file
 
+Type errors
+700 - Not int
+
 9000 - Quit
 9010 - Save

@@ -250,33 +250,6 @@ Library.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/Library.c.s
 .PHONY : Library.c.s
 
-Reader.o: Reader.c.o
-
-.PHONY : Reader.o
-
-# target to build an object file
-Reader.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/Reader.c.o
-.PHONY : Reader.c.o
-
-Reader.i: Reader.c.i
-
-.PHONY : Reader.i
-
-# target to preprocess a source file
-Reader.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/Reader.c.i
-.PHONY : Reader.c.i
-
-Reader.s: Reader.c.s
-
-.PHONY : Reader.s
-
-# target to generate assembly for a file
-Reader.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/Reader.c.s
-.PHONY : Reader.c.s
-
 Renderer.o: Renderer.c.o
 
 .PHONY : Renderer.o
@@ -331,6 +304,33 @@ Terminal.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/Terminal.c.s
 .PHONY : Terminal.c.s
 
+TextHandler.o: TextHandler.c.o
+
+.PHONY : TextHandler.o
+
+# target to build an object file
+TextHandler.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/TextHandler.c.o
+.PHONY : TextHandler.c.o
+
+TextHandler.i: TextHandler.c.i
+
+.PHONY : TextHandler.i
+
+# target to preprocess a source file
+TextHandler.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/TextHandler.c.i
+.PHONY : TextHandler.c.i
+
+TextHandler.s: TextHandler.c.s
+
+.PHONY : TextHandler.s
+
+# target to generate assembly for a file
+TextHandler.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/TextHandler.c.s
+.PHONY : TextHandler.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -352,15 +352,15 @@ help:
 	@echo "... Library.o"
 	@echo "... Library.i"
 	@echo "... Library.s"
-	@echo "... Reader.o"
-	@echo "... Reader.i"
-	@echo "... Reader.s"
 	@echo "... Renderer.o"
 	@echo "... Renderer.i"
 	@echo "... Renderer.s"
 	@echo "... Terminal.o"
 	@echo "... Terminal.i"
 	@echo "... Terminal.s"
+	@echo "... TextHandler.o"
+	@echo "... TextHandler.i"
+	@echo "... TextHandler.s"
 .PHONY : help
 
 

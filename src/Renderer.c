@@ -103,7 +103,7 @@ void printStatusLine(char* command){
     loadCursorLocation();
 }
 
-void printLineNumbers(){
+void printTextLines(){
     saveCursorLocation();
 
     int writeablerows = getTerminalRows() - 2;
@@ -137,6 +137,6 @@ void redrawScreen(){
     loadCursorLocation();
 
     printHeadLine();
-    printLineNumbers();
+    printTextLines();
     //printStatusLine();
 }

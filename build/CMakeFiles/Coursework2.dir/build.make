@@ -128,18 +128,18 @@ CMakeFiles/Coursework2.dir/Terminal.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Coursework2.dir/Terminal.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Terminal.c -o CMakeFiles/Coursework2.dir/Terminal.c.s
 
-CMakeFiles/Coursework2.dir/Reader.c.o: CMakeFiles/Coursework2.dir/flags.make
-CMakeFiles/Coursework2.dir/Reader.c.o: /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Reader.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/Coursework2.dir/Reader.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Coursework2.dir/Reader.c.o -c /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Reader.c
+CMakeFiles/Coursework2.dir/TextHandler.c.o: CMakeFiles/Coursework2.dir/flags.make
+CMakeFiles/Coursework2.dir/TextHandler.c.o: /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/TextHandler.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/Coursework2.dir/TextHandler.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Coursework2.dir/TextHandler.c.o -c /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/TextHandler.c
 
-CMakeFiles/Coursework2.dir/Reader.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Coursework2.dir/Reader.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Reader.c > CMakeFiles/Coursework2.dir/Reader.c.i
+CMakeFiles/Coursework2.dir/TextHandler.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Coursework2.dir/TextHandler.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/TextHandler.c > CMakeFiles/Coursework2.dir/TextHandler.c.i
 
-CMakeFiles/Coursework2.dir/Reader.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Coursework2.dir/Reader.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Reader.c -o CMakeFiles/Coursework2.dir/Reader.c.s
+CMakeFiles/Coursework2.dir/TextHandler.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Coursework2.dir/TextHandler.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/TextHandler.c -o CMakeFiles/Coursework2.dir/TextHandler.c.s
 
 CMakeFiles/Coursework2.dir/Library.c.o: CMakeFiles/Coursework2.dir/flags.make
 CMakeFiles/Coursework2.dir/Library.c.o: /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Library.c
@@ -173,7 +173,7 @@ Coursework2_OBJECTS = \
 "CMakeFiles/Coursework2.dir/Renderer.c.o" \
 "CMakeFiles/Coursework2.dir/FileIO.c.o" \
 "CMakeFiles/Coursework2.dir/Terminal.c.o" \
-"CMakeFiles/Coursework2.dir/Reader.c.o" \
+"CMakeFiles/Coursework2.dir/TextHandler.c.o" \
 "CMakeFiles/Coursework2.dir/Library.c.o" \
 "CMakeFiles/Coursework2.dir/Commands.c.o"
 
@@ -184,7 +184,7 @@ Coursework2: CMakeFiles/Coursework2.dir/Coursework2.c.o
 Coursework2: CMakeFiles/Coursework2.dir/Renderer.c.o
 Coursework2: CMakeFiles/Coursework2.dir/FileIO.c.o
 Coursework2: CMakeFiles/Coursework2.dir/Terminal.c.o
-Coursework2: CMakeFiles/Coursework2.dir/Reader.c.o
+Coursework2: CMakeFiles/Coursework2.dir/TextHandler.c.o
 Coursework2: CMakeFiles/Coursework2.dir/Library.c.o
 Coursework2: CMakeFiles/Coursework2.dir/Commands.c.o
 Coursework2: CMakeFiles/Coursework2.dir/build.make

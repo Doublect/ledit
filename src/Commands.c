@@ -5,10 +5,15 @@
 #include "Commands.h"
 #include "Terminal.h"
 #include "Renderer.h"
+#include "TextHandler.h"
+#include "Library.h"
 #include "definitions.h"
 
 static char* command;
 static int capacity, length, cursor;
+
+char *parseArgument(char **string, int spaceSeparated);
+int doSet(char *pointer);
 
 void initializeCommands(){
     // Make sure command is a null pointer
@@ -42,6 +47,12 @@ int commands(char c){
 
         case 'i':
             return 0;
+
+        case 's':
+            return SET;
+
+        default:
+            return NOFUNC;
     }
 }
 
@@ -54,7 +65,13 @@ int executeCommand(){
                 return QUIT;
 
             case SAVE:
+                writeFile(NULL, False);
                 return SAVE;
+
+            case SET:
+                return doSet(&command[3]);
+
+
         }
 
     }
@@ -152,4 +169,55 @@ int moveCursorLeft(){
         return 0;
     }
     return 1;
+}
+
+/// Tries to find the next parameter of a command
+/// \param string The string from which the parsing shall occur. The position
+/// \param spaceSeparated Whether the argument is delimited by spaces.
+/// \return A null-terminated string or NULL.
+char *parseArgument(char **string, int spaceSeparated){
+    if(string == NULL){
+        return NULL;
+    }
+
+    int arglen;
+    char *arg;
+
+    if(spaceSeparated){
+        arglen = strcspn(*string, " \n\r\0") + 1;
+
+        arg = malloc(sizeof(char) * arglen);
+    } else {
+        arglen = strlen(*string) + 1;
+
+        arg = malloc(sizeof(char) * arglen);
+    }
+
+    memccpy(arg, *string, sizeof(char), arglen);
+
+    arg[arglen] = '\0';
+
+    // Move the command string, so it will be possible to parse next argument afterwards
+    (*string) += arglen;
+
+    return arg;
+}
+
+int doSet(char *pointer){
+
+    // Get the pos of the line which needs changing
+    char *pos = parseArgument(&pointer, True);
+    if(!isNumberStr) return NOTINTWARN;
+    int lineNum = strtoint(pos);
+
+    // Get the actual content of the line
+    char *line = parseArgument(&pointer, False);
+
+    // Change the stored text values
+    setLine(line, lineNum);
+
+    // Update rendered text
+    printTextLines();
+
+    return 0;
 }

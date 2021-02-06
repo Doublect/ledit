@@ -8,9 +8,9 @@ set(CMAKE_DEPENDS_CHECK_C
   "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Coursework2.c" "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/cmake-build-debug/CMakeFiles/Coursework2.dir/Coursework2.c.o"
   "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/FileIO.c" "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/cmake-build-debug/CMakeFiles/Coursework2.dir/FileIO.c.o"
   "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Library.c" "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/cmake-build-debug/CMakeFiles/Coursework2.dir/Library.c.o"
-  "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Reader.c" "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/cmake-build-debug/CMakeFiles/Coursework2.dir/Reader.c.o"
   "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Renderer.c" "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/cmake-build-debug/CMakeFiles/Coursework2.dir/Renderer.c.o"
   "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Terminal.c" "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/cmake-build-debug/CMakeFiles/Coursework2.dir/Terminal.c.o"
+  "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/TextHandler.c" "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/cmake-build-debug/CMakeFiles/Coursework2.dir/TextHandler.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

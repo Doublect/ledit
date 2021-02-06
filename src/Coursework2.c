@@ -23,8 +23,8 @@ int main(int argc, char *argv[]){
 
     //moveCursor('B');
     printf("\r");
-    
-    printLineNumbers();
+
+    printTextLines();
 
     moveCursorTo(1, getTerminalRows());
 
@@ -49,8 +49,6 @@ int main(int argc, char *argv[]){
             int signal = executeCommand();
 
             if(signal == QUIT) break;
-
-            if(signal == SAVE) writeFile(NULL, False);
 
             initializeCommands();
         } else {

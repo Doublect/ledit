@@ -21,6 +21,8 @@ static int savedX,  savedY;
 static int lastrow, lastcol;
 static int windowChanged;
 
+
+// Mouse scroll: https://stackoverflow.com/questions/8476332/writing-a-real-interactive-terminal-program-like-vim-htop-in-c-c-witho
 //https://cboard.cprogramming.com/c-programming/130243-non-blocking-getchar.html -> timeout
 int setTerminal(){
     // Get current terminal settings
@@ -151,6 +153,7 @@ void WINCHSignal(int signal){
 
 // TODO: Handle exit signals
 void SIGINTSignal(int signal){
+    printf("Hello\n");
     return;
 }
 
@@ -204,24 +207,73 @@ void mnextInput(char *c, int milliseconds, int elements){
     }
 }
 
-void arrowKeyHandler(char key){
-
-    // Store cursor position
-    int x, y;
-    getCursorPosition(&x, &y);
-
+void controlArrowHandler(char key){
     int *screenY = getScreenYptr();
+    int *screenX = getScreenXptr();
+
+    switch (key) { // the real value
+        case 'A': //Up
+            if(*screenY > 0){
+                (*screenY) -= (*screenY <= 2) ?  (*screenY) : 3;
+                printTextLines();
+            }
+            return;
+        case 'B': //Down
+            (*screenY) += 3;
+            printTextLines();
+            return;
+        case 'C': //Right
+            (*screenX) += 5;
+            printTextLines();
+            return;
+        case 'D': //Left
+            if(*screenX > 0){
+                (*screenX) -= (*screenX < 5) ?  (*screenX) : 5;
+                printTextLines();
+            }
+            return;
+        default:
+            break;
+    }
+}
+
+void altArrowHandler(char key){
+    int *screenY = getScreenYptr();
+    int *screenX = getScreenXptr();
 
     switch (key) { // the real value
         case 'A': //Up
             if(*screenY > 0){
                 (*screenY)--;
-                printLineNumbers();
+                printTextLines();
             }
             return;
         case 'B': //Down
             (*screenY)++;
-            printLineNumbers();
+            printTextLines();
+            return;
+        case 'C': //Right
+            (*screenX)++;
+            printTextLines();
+            return;
+        case 'D': //Left
+            if(*screenX > 0){
+                (*screenX)--;
+                printTextLines();
+            }
+            return;
+        default:
+            break;
+    }
+}
+
+void arrowKeyHandler(char key){
+    switch (key) { // the real value
+        case 'A': //Up
+            // TODO: Command history
+            return;
+        case 'B': //Down
+            // TODO: Command history
             return;
         case 'C': //Right
             if(moveCursorRight() == 0){
@@ -233,6 +285,14 @@ void arrowKeyHandler(char key){
                 moveCursor('D');
             }
             return;
+        case '1': // Pressing ctrl/alt + arrow key Output is of form: "1;5"/"1;3" + 'A-D'
+            getchar(); // Eat ';' input
+
+            if((key = getchar()) == '5') // Check whether it is alt or ctrl (5 = ctrl)
+                return controlArrowHandler(getchar()); // Get direction and pass it to handler
+            else if(key == '3')
+                return altArrowHandler(getchar());
+            break;
         default:
             break;
     }

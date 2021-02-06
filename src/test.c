@@ -8,6 +8,7 @@
 int main(int argc, char *argv[]) {
     //setTerminal();
 
+    /*
     if(argc == 2) {
         //readFile(argv[1]);
         FILE *fptr = fopen(argv[1], "r");
@@ -15,10 +16,10 @@ int main(int argc, char *argv[]) {
         while(fgets(string, 1024, fptr) != NULL){
             printf("%s", string);
         }
-    }
+    }*/
 
     putchar('\n');
-    /*while (1) {
+    while (1) {
         char c;
         read(STDIN_FILENO, &c, 1);
 
@@ -38,7 +39,7 @@ int main(int argc, char *argv[]) {
         //printLineNumbers();
 
         printf("%c %d\n", c, c);
-    }*/
+    }
 
     //resetTerminal();
 
