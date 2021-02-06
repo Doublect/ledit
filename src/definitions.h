@@ -8,7 +8,9 @@
 #define True 1
 #define False 0
 
-#define NOFUNC 9404
+#define NOARG 9400
+#define NOFUNC 9410
+
 #define QUIT 9000
 #define SAVE 9010
 #define SET 9100

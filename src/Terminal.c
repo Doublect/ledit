@@ -2,7 +2,6 @@
 #include <termios.h>            //termios, TCSANOW, ECHO, ICANON
 #include <unistd.h>     //STDIN_FILENO
 #include <stdio.h>
-#include <time.h>
 #include <stdlib.h> //calloc
 #include <signal.h>
 
@@ -18,15 +17,13 @@
 
 static struct termios oldt, newt;
 static int savedX,  savedY;
-static int lastrow, lastcol;
-static int windowChanged;
 
 
 // Mouse scroll: https://stackoverflow.com/questions/8476332/writing-a-real-interactive-terminal-program-like-vim-htop-in-c-c-witho
 //https://cboard.cprogramming.com/c-programming/130243-non-blocking-getchar.html -> timeout
 int setTerminal(){
     // Get current terminal settings
-    tcgetattr( STDIN_FILENO, &oldt);
+    tcgetattr(STDIN_FILENO, &oldt);
 
     // Save terminal settings
     newt = oldt;
@@ -49,10 +46,6 @@ int setTerminal(){
 
     // Write terminal settings for editor session
     tcsetattr( STDIN_FILENO, TCSANOW, &newt);
-
-    // Initialize terminal size tracking
-    lastcol = getTerminalColumns();
-    lastrow = getTerminalRows();
 
     return 0;
 }
@@ -90,16 +83,11 @@ int getTerminalRows(){
     return w.ws_row;
 }
 
-void checkTerminalSize(){
-    int curcol = getTerminalColumns();
-    int currow = getTerminalRows();
-}
-
 void getCursorPosition(int *xpos, int *ypos){
 
     // Allocate strings for the characters (numbers)
-    char *xstr = malloc(9);
-    char *ystr = malloc(9);
+    char *xstr = malloc(50);
+    char *ystr = malloc(50);
 
     // Store start position of array
     char *x = xstr, *y = ystr;
@@ -110,22 +98,20 @@ void getCursorPosition(int *xpos, int *ypos){
 
     // Loop and get all numbers between [ and ;
     char in;
-    nextInput(&in);
-    while(in != ';'){
-        if(isNumber(in) == 0){
+
+    while((in = getchar()) != ';'){ // Loop over all characters until ;
+        if(isNumber(in)) { // Make sure it is a number
             *y = in; // Save number
             y++; // Move pointer by 1
         }
-        nextInput(&in); // Get next number
     }
 
     // Loop and get all numbers between ; and R
-    while(in != 'R'){
-        if(isNumber(in) == 0){
-            *x = in; //save number
-            x++; //move number
+    while((in = getchar()) != 'R'){
+        if(isNumber(in)) { // Make sure it is a number
+            *x = in; // Save number
+            x++; // Move number string pointer by 1
         }
-        nextInput(&in); // Get next number
     }
 
     // Null-terminate strings
@@ -146,14 +132,17 @@ void saveCursorLocation(){
 }
 
 void WINCHSignal(int signal){
-    // Set windowChange, so it is checked on next input.
-    windowChanged = True;
+    // If window has changed, redraw
     redrawScreen();
+
+    int x, y;
+    getCursorPosition(&x, &y);
+
+    moveCursorTo(x, getTerminalRows());
 }
 
 // TODO: Handle exit signals
 void SIGINTSignal(int signal){
-    return;
 }
 
 void initSignal(){
@@ -180,37 +169,11 @@ void moveCursor(char key){
     printf("\033[%c", key);
 }
 
-void nextInput(char *c){
-    while(read(STDIN_FILENO, c, 1) == 0){
-        if(windowChanged == True) {
-
-            redrawScreen();
-
-            // Reset window change
-            windowChanged = False;
-        }
-        msleep(50);
-    }
-}
-
-void mnextInput(char *c, int milliseconds, int elements){
-    while(read(STDIN_FILENO, c, elements) == 0){
-        if(windowChanged == True) {
-
-            redrawScreen();
-
-            // Reset window change
-            windowChanged = False;
-        }
-        msleep(milliseconds);
-    }
-}
-
 void controlArrowHandler(char key){
-    int *screenY = getScreenYptr();
-    int *screenX = getScreenXptr();
+    long *screenY = getScreenYptr();
+    long *screenX = getScreenXptr();
 
-    switch (key) { // the real value
+    switch (key) { // The real value
         case 'A': //Up
             if(*screenY > 0){
                 (*screenY) -= (*screenY <= 2) ?  (*screenY) : 3;
@@ -237,8 +200,8 @@ void controlArrowHandler(char key){
 }
 
 void altArrowHandler(char key){
-    int *screenY = getScreenYptr();
-    int *screenX = getScreenXptr();
+    long *screenY = getScreenYptr();
+    long *screenX = getScreenXptr();
 
     switch (key) { // the real value
         case 'A': //Up
@@ -275,12 +238,12 @@ void arrowKeyHandler(char key){
             // TODO: Command history
             return;
         case 'C': //Right
-            if(moveCursorRight() == 0){
+            if(moveCursorRight()){
                 moveCursor('C');
             }
             return;
         case 'D': //Left
-            if(moveCursorLeft() == 0){
+            if(moveCursorLeft()){
                 moveCursor('D');
             }
             return;

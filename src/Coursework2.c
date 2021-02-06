@@ -21,38 +21,36 @@ int main(int argc, char *argv[]){
 
     printHeadLine();
 
-    printf("\r");
+    //printf("\r");
 
     printTextLines();
 
-    moveCursorTo(1, getTerminalRows());
-
     initializeCommands();
 
+    initSignal();
+
     while(1) {
-        char c[3] = "\0";
+        char c = getchar();
 
         //mnextInput(&c[0], 50, 3);
-        c[0] = getchar();
         //arrow key detection: https://stackoverflow.com/questions/10463201/getch-and-arrow-codes
         //cursor movement: https://stackoverflow.com/questions/26423537/how-to-position-the-input-text-cursor-in-c
-        if (c[0] == '\033') { // if the first value is esc
-            c[1] = getchar();
-            if (c[1] == '[') { // catch escape sequence
-                c[2] = getchar();
-                arrowKeyHandler(c[2]);
+        if (c == '\033') { // if the first value is esc
+            c = getchar();
+            if (c == '[') { // catch escape sequence
+                c = getchar();
+                arrowKeyHandler(c);
             }
-        } else if(c[0] == 127) {
+        } else if(c == 127) { // If backspace
             deleteCharacter();
-        } else if(c[0] == 13) {
+        } else if(c == 13) { // If enter
             int signal = executeCommand();
 
             if(signal == QUIT) break;
 
             initializeCommands();
-            redrawScreen();
         } else {
-            insertCharacter(c[0]);
+            insertCharacter(c);
         }
     }
 

@@ -2,12 +2,10 @@
 #define COURSEWORK2_RENDERER_H
 
 int getNumberSize();
-int *getScreenXptr();
-int *getScreenYptr();
+long *getScreenXptr();
+long *getScreenYptr();
 void clearScreen();
 void clearLine();
-void printExitQuestion();
-void abortExit();
 void printHeadLine();
 void printTextLines();
 void printStatusLine(char* command);

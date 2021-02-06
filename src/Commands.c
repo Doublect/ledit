@@ -77,9 +77,12 @@ int executeCommand(){
 
             case SWAP:
                 return doSwap(&command[4]);
-        }
 
+            default:
+                return -1;
+        }
     }
+    return -100;
 }
 
 // Insert a new character at the cursor position
@@ -158,22 +161,22 @@ void deleteCharacter(){
     arrowKeyHandler('D');
 }
 
-// Tries to move the cursor right, returns 0 if successful, else 1
+// Tries to move the cursor right, returns 1 if successful, else 0
 int moveCursorRight(){
    if(cursor < length){
        cursor++;
-       return 0;
+       return True;
    }
-    return 1;
+    return False;
 }
 
 // Tries to move the cursor left, returns 0 if successful, else 1
 int moveCursorLeft(){
     if(cursor > 0){
         cursor--;
-        return 0;
+        return True;
     }
-    return 1;
+    return False;
 }
 
 /// Tries to find the next parameter of a command
@@ -181,9 +184,11 @@ int moveCursorLeft(){
 /// \param spaceSeparated Whether the argument is delimited by spaces.
 /// \return A null-terminated string or NULL.
 char *parseArgument(char **string, int spaceSeparated){
-    if(string == NULL){
+    if(*string == NULL){
         return NULL;
     }
+
+
 
     long arglen = 0;
     if(spaceSeparated){
@@ -203,13 +208,17 @@ char *parseArgument(char **string, int spaceSeparated){
     // Move the command pointer, so it will be possible to parse next argument afterwards
     (*string) += arglen;
 
+    if(spaceSeparated) (*string)++;
+
     return arg;
 }
 
 int doSet(char *pointer){
 
     // Get the pos of the line which needs changing
-    char *pos = parseArgument(&pointer, True);
+    char *pos;
+    if((pos = parseArgument(&pointer, True)) == NULL) return NOARG;
+
     //printf("%d\n", isNumberStr(pos));
     if(!isNumberStr(pos)) return NOTNUMWARN;
     int lineNum = strtoint(pos);
@@ -228,15 +237,16 @@ int doSet(char *pointer){
 
 int doSwap(char *pointer){
     // Get the pos of the line which needs changing
-    char *posA = parseArgument(&pointer, True);
-    char *posB = parseArgument(&pointer, True);
+    char *posA, *posB;
+    if((posA = parseArgument(&pointer, True)) == NULL) return NOARG;
+    if((posB = parseArgument(&pointer, True)) == NULL) return NOARG;
 
-    //printf("'%s' '%s'\n", posA, posB);
-
-    if(!(isNumberStr(posA) && isNumberStr(posB))) return NOTNUMWARN;
-
+    if(!isNumberStr(posA) || !isNumberStr(posB)) return NOTNUMWARN;
 
     swapLines(strtolong(posA), strtolong(posB));
+
+    // Update rendered text
+    printTextLines();
 
     return 0;
 }

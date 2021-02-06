@@ -40,7 +40,6 @@ void strprint(char * str){
 
 int isNumber(char c){
     if(c >= '0' && c <= '9'){
-
         return True;
     }
     return False;
@@ -59,7 +58,7 @@ int isNumberStr(char *c){
 int strtoint(char *str){
     int ans = 0;
     for(int i = 0; i < 10 && *str; str++, i++){
-        if(isNumber(*str) == 0){
+        if(isNumber(*str)){
             ans *= 10;
             ans += *str - '0';
         }
@@ -70,7 +69,7 @@ int strtoint(char *str){
 long strtolong(char *str){
     long ans = 0;
     for(int i = 0; i < 19 && *str; str++, i++){
-        if(isNumber(*str) == 0){
+        if(isNumber(*str)){
             ans *= 10;
             ans += *str - '0';
         }

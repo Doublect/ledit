@@ -6,6 +6,7 @@ int quit();
 int getTerminalColumns();
 int getTerminalRows();
 void getCursorPosition();
+void initSignal();
 void moveCursorTo(int x, int y);
 void saveCursorLocation();
 void loadCursorLocation();

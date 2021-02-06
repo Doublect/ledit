@@ -102,6 +102,8 @@ void swapLines(long posA, long posB){
     char *tempLine = fileContents[posA - 1];
 
     setLine(fileContents[posB - 1], posA, lineLength[posB - 1]);
+    printf("Hello\n");
+
     setLine(tempLine, posB, tempLineLength);
 
 }
