@@ -1,12 +1,12 @@
 #include<stdio.h>
 #include <unistd.h>
-//#include "Terminal.h"
+#include "Terminal.h"
 //#include "Library.h"
 #include <stdlib.h>
 //#include "Reader.h"
 
 int main(int argc, char *argv[]) {
-    //setTerminal();
+    setTerminal();
 
     /*
     if(argc == 2) {
@@ -20,28 +20,22 @@ int main(int argc, char *argv[]) {
 
     putchar('\n');
     while (1) {
-        char c;
-        read(STDIN_FILENO, &c, 1);
+        char c = getchar();
+        //read(STDIN_FILENO, &c, 1);
 
         if(c == 'a') break;
 
-        if(c == '\127') {
-            putchar('H');
-            //putchar('\n');
-        }
+        if(c == 's') saveCursorLocation();
 
-        if(c == 127){
-            putchar('H');
-        }
         //putchar(c);
         //putchar('\n');
         //mnextInput(&c, 40, 1);
         //printLineNumbers();
 
-        printf("%c %d\n", c, c);
+        //printf("%c %d\n", c, c);
     }
 
-    //resetTerminal();
+    quit();
 
     return 0;
 }

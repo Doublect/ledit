@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h> //calloc
 #include <signal.h>
+#include <string.h>
 
 #include "Renderer.h"
 #include "Terminal.h"
@@ -85,46 +86,9 @@ int getTerminalRows(){
 
 void getCursorPosition(int *xpos, int *ypos){
 
-    // Allocate strings for the characters (numbers)
-    char *xstr = malloc(50);
-    char *ystr = malloc(50);
-
-    // Store start position of array
-    char *x = xstr, *y = ystr;
-
     // VT100 request to print cursor position, the response has the format \033[row;columnR
-    write(1, "\033[6n", 4);
-
-
-    // Loop and get all numbers between [ and ;
-    char in;
-
-    while((in = getchar()) != ';'){ // Loop over all characters until ;
-        if(isNumber(in)) { // Make sure it is a number
-            *y = in; // Save number
-            y++; // Move pointer by 1
-        }
-    }
-
-    // Loop and get all numbers between ; and R
-    while((in = getchar()) != 'R'){
-        if(isNumber(in)) { // Make sure it is a number
-            *x = in; // Save number
-            x++; // Move number string pointer by 1
-        }
-    }
-
-    // Null-terminate strings
-    *x = '\0';
-    *y = '\0';
-
-    // Get number from null-terminated string
-    *xpos = strtoint(xstr);
-    *ypos = strtoint(ystr);
-
-    // Free memory
-    free(xstr);
-    free(ystr);
+    printf("\033[6n");
+    scanf("\033[%d;%dR", ypos, xpos); // NOLINT(cert-err34-c)
 }
 
 void saveCursorLocation(){

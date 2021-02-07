@@ -27,6 +27,7 @@ int readTextFile(char *filepath, char *(*(*filecontentsptr)), long *fileContents
     fclose(fptr);
     fptr = fopen(filepath, "r");
 
+
     // Count number of lines
     while((c = fgetc(fptr)) != EOF){
         if(c == '\n' || c == '\0'){
