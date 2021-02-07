@@ -10,7 +10,7 @@
 #include "definitions.h"
 
 static char *filePath;
-static long *lineLength, *lineCapacity; //stores the positions of lines on screen
+static long *lineLength, *lineCapacity; //stores the positions of lines on screenPos
 static long lineCount, fileContentsCapacity;
 static char **fileContents;
 

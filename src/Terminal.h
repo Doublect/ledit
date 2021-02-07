@@ -1,18 +1,13 @@
 #ifndef COURSEWORK2_TERMINAL_H
 #define COURSEWORK2_TERMINAL_H
 
-int setTerminal();
+int initTerminal();
 int quit();
-int getTerminalColumns();
-int getTerminalRows();
-void getCursorPosition();
 void initSignal();
 void moveCursorTo(int x, int y);
-void saveCursorLocation();
-void loadCursorLocation();
-void moveCursor(char key);
-void nextInput(char *c);
-void mnextInput(char *c, int milliseconds, int elements);
+void printText();
+void printCommand(char *command);
+struct PointInt *getScreenSize();
 void arrowKeyHandler(char key);
 
 #endif //COURSEWORK2_TERMINAL_H

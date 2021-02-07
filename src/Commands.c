@@ -1,10 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
-#include "Commands.h"
 #include "Terminal.h"
-#include "Renderer.h"
 #include "TextHandler.h"
 #include "Library.h"
 #include "definitions.h"
@@ -29,9 +26,9 @@ void initializeCommands(){
     command[0] = '\0';
     command[255] = '\0';
 
-    // Make sure cursor is in bottom left corner, and that the bottom line is clear
-    moveCursorTo(1, getTerminalRows());
-    clearLine();
+    // Make sure cursor is in bottom left corner, then clear the it
+    moveCursorTo(1, getScreenSize()->y);
+    terminalCommand("2K");
 }
 
 int commands(){
@@ -128,7 +125,7 @@ void insertCharacter(char c){
 
     command[length + 1] = '\0';
 
-    printStatusLine(command);
+    printCommand(command);
 
     // Move cursor to reflect the change
     arrowKeyHandler('C');
@@ -155,7 +152,7 @@ void deleteCharacter(){
 
     command[length + 1] = '\0';
 
-    printStatusLine(command);
+    printCommand(command);
 
     // Move cursor to reflect change
     arrowKeyHandler('D');
@@ -192,9 +189,9 @@ char *parseArgument(char **string, int spaceSeparated){
 
     long arglen = 0;
     if(spaceSeparated){
-        arglen += strcspn(*string, " \n\r\0");
+        arglen += (long)strcspn(*string, " \n\r\0");
     } else {
-        arglen += strlen(*string) + 1;
+        arglen += (long)strlen(*string) + 1;
     }
 
     char *arg = malloc(sizeof(char) * arglen);
@@ -230,7 +227,7 @@ int doSet(char *pointer){
     setLine(line, lineNum, -1);
 
     // Update rendered text
-    printTextLines();
+    printText();
 
     return 0;
 }
@@ -246,7 +243,7 @@ int doSwap(char *pointer){
     swapLines(strtolong(posA), strtolong(posB));
 
     // Update rendered text
-    printTextLines();
+    printText();
 
     return 0;
 }

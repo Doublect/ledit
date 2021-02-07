@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include "Renderer.h"
 #include "Terminal.h"
 #include "Commands.h"
 #include "TextHandler.h"
@@ -9,21 +8,13 @@
 
 int main(int argc, char *argv[]){
 
+    int exitsignal = 0;
     if(argc == 2)
         readFile(argv[1]);
-
-    if(setTerminal() != 0)
-        return 301;
         
     //setvbuf(stdout, NULL, _IONBF, 0);
 
-    clearScreen();
-
-    printHeadLine();
-
-    //printf("\r");
-
-    printTextLines();
+    if((exitsignal = initTerminal())) return exitsignal;
 
     initializeCommands();
 
@@ -32,7 +23,6 @@ int main(int argc, char *argv[]){
     while(1) {
         char c = getchar();
 
-        //mnextInput(&c[0], 50, 3);
         //arrow key detection: https://stackoverflow.com/questions/10463201/getch-and-arrow-codes
         //cursor movement: https://stackoverflow.com/questions/26423537/how-to-position-the-input-text-cursor-in-c
         if (c == '\033') { // if the first value is esc

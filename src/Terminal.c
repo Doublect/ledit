@@ -2,12 +2,11 @@
 #include <termios.h>            //termios, TCSANOW, ECHO, ICANON
 #include <unistd.h>     //STDIN_FILENO
 #include <stdio.h>
-#include <stdlib.h> //calloc
 #include <signal.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "Renderer.h"
-#include "Terminal.h"
 #include "Library.h"
 #include "Commands.h"
 
@@ -18,6 +17,11 @@
 
 static struct termios oldt, newt;
 static int savedX,  savedY;
+
+static struct PointInt screenSize = {0, 0};
+static struct Point screenPos = {0, 0};
+
+
 
 
 // Mouse scroll: https://stackoverflow.com/questions/8476332/writing-a-real-interactive-terminal-program-like-vim-htop-in-c-c-witho
@@ -51,11 +55,44 @@ int setTerminal(){
     return 0;
 }
 
+void updateScreenSize(){
+    struct winsize w;
+    ioctl(0, TIOCGWINSZ, &w);
+
+    screenSize.x = w.ws_col;
+    screenSize.y = w.ws_row;
+}
+
+struct PointInt *getScreenSize(){
+    return &screenSize;
+}
+
+int initTerminal(){
+
+    if(setTerminal()) return 301;
+
+    updateScreenSize();
+
+    clearScreen();
+
+    printHeadLine(&screenSize);
+
+    //printf("\r");
+
+    printTextLines(&screenPos, &screenSize);
+
+    return 0;
+}
+
 ///Restore original terminal settings
 int resetTerminal(){
     tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
 
     return 0;
+}
+
+void moveCursorTo(int x, int y){
+    printf("\033[%d;%dH", y, x);
 }
 
 int quit(){
@@ -70,20 +107,6 @@ int quit(){
     return 0;
 }
 
-int getTerminalColumns(){
-    struct winsize w;
-    ioctl(0, TIOCGWINSZ, &w);
-
-    return w.ws_col;
-}
-
-int getTerminalRows(){
-    struct winsize w;
-    ioctl(0, TIOCGWINSZ, &w);
-
-    return w.ws_row;
-}
-
 void getCursorPosition(int *xpos, int *ypos){
 
     // VT100 request to print cursor position, the response has the format \033[row;columnR
@@ -95,14 +118,24 @@ void saveCursorLocation(){
     getCursorPosition(&savedX, &savedY);
 }
 
+void loadCursorLocation(){
+    //VT100 escape code to move cursor
+    printf("\033[%d;%dH", savedY, savedX);
+}
+
 void WINCHSignal(int signal){
+
+    updateScreenSize();
+
     // If window has changed, redraw
-    redrawScreen();
+    saveCursorLocation();
+    redrawScreen(&screenPos, &screenSize);
+    loadCursorLocation();
 
     int x, y;
     getCursorPosition(&x, &y);
 
-    moveCursorTo(x, getTerminalRows());
+    moveCursorTo(x, screenSize.y);
 }
 
 // TODO: Handle exit signals
@@ -120,74 +153,68 @@ void initSignal(){
     sigaction(SIGQUIT, &sigHandler, NULL);
 }
 
-void moveCursorTo(int x, int y){
-    printf("\033[%d;%dH", y, x);
+void printText(){
+    saveCursorLocation();
+    printTextLines(&screenPos, &screenSize);
+    loadCursorLocation();
 }
 
-void loadCursorLocation(){
-    //VT100 escape code to move cursor
-    printf("\033[%d;%dH", savedY, savedX);
-}
-
-void moveCursor(char key){
-    printf("\033[%c", key);
+void printCommand(char *command){
+    saveCursorLocation();
+    printStatusLine(command, &screenSize);
+    loadCursorLocation();
 }
 
 void controlArrowHandler(char key){
-    long *screenY = getScreenYptr();
-    long *screenX = getScreenXptr();
-
     switch (key) { // The real value
         case 'A': //Up
-            if(*screenY > 0){
-                (*screenY) -= (*screenY <= 2) ?  (*screenY) : 3;
-                printTextLines();
+            if(screenPos.y > 0){
+                (screenPos.y) -= (screenPos.y <= 2) ? (screenPos.y) : 3;
+                printText();
             }
-            return;
+            break;
         case 'B': //Down
-            (*screenY) += 3;
-            printTextLines();
-            return;
+            (screenPos.y) += 3;
+            printText();
+            break;
         case 'C': //Right
-            (*screenX) += 5;
-            printTextLines();
-            return;
+            (screenPos.x) += 5;
+            printText();
+            break;
         case 'D': //Left
-            if(*screenX > 0){
-                (*screenX) -= (*screenX < 5) ?  (*screenX) : 5;
-                printTextLines();
+            if(screenPos.x > 0){
+                (screenPos.x) -= (screenPos.x < 5) ? (screenPos.x) : 5;
+                printText();
             }
-            return;
+            break;
         default:
             break;
     }
 }
 
 void altArrowHandler(char key){
-    long *screenY = getScreenYptr();
-    long *screenX = getScreenXptr();
 
     switch (key) { // the real value
         case 'A': //Up
-            if(*screenY > 0){
-                (*screenY)--;
-                printTextLines();
+            if(screenPos.y > 0){
+                screenPos.y--;
+                printText();
             }
-            return;
+            break;
         case 'B': //Down
-            (*screenY)++;
-            printTextLines();
-            return;
+            screenPos.y++;
+            printText();
+            break;
         case 'C': //Right
-            (*screenX)++;
-            printTextLines();
-            return;
+            screenPos.x++;
+            printText();
+            break;
         case 'D': //Left
-            if(*screenX > 0){
-                (*screenX)--;
-                printTextLines();
+            if(screenPos.x > 0){
+                screenPos.x--;
+                printText();
             }
-            return;
+            break;
         default:
             break;
     }
@@ -197,20 +224,20 @@ void arrowKeyHandler(char key){
     switch (key) { // the real value
         case 'A': //Up
             // TODO: Command history
-            return;
+            break;
         case 'B': //Down
             // TODO: Command history
-            return;
+            break;
         case 'C': //Right
             if(moveCursorRight()){
                 moveCursor('C');
             }
-            return;
+            break;
         case 'D': //Left
             if(moveCursorLeft()){
                 moveCursor('D');
             }
-            return;
+            break;
         case '1': // Pressing ctrl/alt + arrow key Output is of form: "1;5"/"1;3" + 'A-D'
             getchar(); // Eat ';' input
 

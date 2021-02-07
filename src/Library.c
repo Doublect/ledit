@@ -1,5 +1,5 @@
-#include<unistd.h> //STDOUt_FILENO, write
-
+#include <unistd.h> //STDOUt_FILENO, write
+#include <stdio.h>
 //Defined in features.h (<- unistd.h)
 //#define __USE_POSIX199309
 //#define _POSIX_C_SOURCE 199309L
@@ -13,23 +13,6 @@
 //#endif
 
 #include "definitions.h"
-
-//https://stackoverflow.com/a/28827188
-void msleep(int milliseconds){ // cross-platform sleep function
-//#ifdef WIN32
-//    Sleep(milliseconds);
-//#elif _POSIX_C_SOURCE >= 199309L
-    struct timespec ts;
-    ts.tv_sec = milliseconds / 1000;
-    ts.tv_nsec = (milliseconds % 1000) * 1000000;
-    nanosleep(&ts, NULL);
-//#else
-//    if (milliseconds >= 1000)
-//      sleep(milliseconds / 1000);
-//    usleep((milliseconds % 1000) * 1000);
-//#endif
-}
-
 
 //Print null-terminated string
 void strprint(char * str){
@@ -119,3 +102,10 @@ int longsize(long x){
     return 19;
 }
 
+void moveCursor(char key){
+    printf("\033[%c", key);
+}
+
+void terminalCommand(char *input){
+    printf("\033[%s", input);
+}
