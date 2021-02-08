@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/Coursework2.dir/ChangeLog.c.o"
   "CMakeFiles/Coursework2.dir/Commands.c.o"
   "CMakeFiles/Coursework2.dir/Coursework2.c.o"
   "CMakeFiles/Coursework2.dir/FileIO.c.o"

@@ -10,7 +10,8 @@
 
 
 
-void initializeCommands();
+void initCommands();
+void quitCommands();
 int executeCommand();
 void insertCharacter(char c);
 void deleteCharacter();

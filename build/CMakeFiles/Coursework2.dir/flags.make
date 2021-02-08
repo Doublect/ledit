@@ -6,5 +6,5 @@ C_DEFINES =
 
 C_INCLUDES = -I/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/..
 
-C_FLAGS = -std=gnu11
+C_FLAGS = -g -std=gnu11
 

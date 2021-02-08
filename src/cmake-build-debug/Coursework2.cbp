@@ -78,6 +78,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/ChangeLog.c">
+			<Option target="Coursework2"/>
+		</Unit>
+		<Unit filename="/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/ChangeLog.h">
+			<Option target="Coursework2"/>
+		</Unit>
 		<Unit filename="/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Commands.c">
 			<Option target="Coursework2"/>
 		</Unit>

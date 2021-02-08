@@ -1,7 +1,3 @@
-//
-// Created by doublect on 2021. 02. 04..
-//
-
 #ifndef COURSEWORK2_DEFINITIONS_H
 #define COURSEWORK2_DEFINITIONS_H
 

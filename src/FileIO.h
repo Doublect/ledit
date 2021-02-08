@@ -6,6 +6,7 @@
 #define COURSEWORK2_FILEIO_H
 
 int readTextFile(char *filepath, char *(*(*filecontentsptr)), long *fileContentsCapacity, long *linecount, long **linelength, long **linecapacity);
-int writeTextFile(char *filepath, char *(*(*filecontentsptr)), long *fileContentsCapacity, long *linecount, long **linelength, long **linecapacity);
+int readFromFile(char *filepath, char ***filecontents, long *linecount, long *capacity);
+int writeToFile(char *filepath, char ***filecontents, long linecount);
 
 #endif //COURSEWORK2_FILEIO_H

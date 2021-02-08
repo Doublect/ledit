@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
+  "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/ChangeLog.c" "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/cmake-build-debug/CMakeFiles/Coursework2.dir/ChangeLog.c.o"
   "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Commands.c" "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/cmake-build-debug/CMakeFiles/Coursework2.dir/Commands.c.o"
   "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Coursework2.c" "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/cmake-build-debug/CMakeFiles/Coursework2.dir/Coursework2.c.o"
   "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/FileIO.c" "/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/cmake-build-debug/CMakeFiles/Coursework2.dir/FileIO.c.o"

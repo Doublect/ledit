@@ -2,7 +2,7 @@
 #define COURSEWORK2_TERMINAL_H
 
 int initTerminal();
-int quit();
+int quitTerminal();
 void initSignal();
 void moveCursorTo(int x, int y);
 void printText();

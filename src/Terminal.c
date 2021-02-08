@@ -1,10 +1,9 @@
 #include <sys/ioctl.h>
-#include <termios.h>            //termios, TCSANOW, ECHO, ICANON
+#include <termios.h>    //termios, TCSANOW, ECHO, ICANON
 #include <unistd.h>     //STDIN_FILENO
 #include <stdio.h>
 #include <signal.h>
 #include <string.h>
-#include <stdlib.h>
 
 #include "Renderer.h"
 #include "Library.h"
@@ -32,7 +31,7 @@ int setTerminal(){
 
     // Save terminal settings
     newt = oldt;
-    
+
     /*ICANON normally takes care that one line at a time will be processed
     that means it will return if it sees a "\n" or an EOF or an EOL*/
     //newt.c_lflag &= ~(ICANON | ECHO | ECHOCTL);
@@ -50,7 +49,7 @@ int setTerminal(){
     //newt.c_cc[VMIN] = 0;
 
     // Write terminal settings for editor session
-    tcsetattr( STDIN_FILENO, TCSANOW, &newt);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 
     return 0;
 }
@@ -95,7 +94,7 @@ void moveCursorTo(int x, int y){
     printf("\033[%d;%dH", y, x);
 }
 
-int quit(){
+int quitTerminal(){
     printf("\n\r");
     moveCursorTo(0, 0);
     printf("\033[2J");
@@ -111,7 +110,13 @@ void getCursorPosition(int *xpos, int *ypos){
 
     // VT100 request to print cursor position, the response has the format \033[row;columnR
     printf("\033[6n");
-    scanf("\033[%d;%dR", ypos, xpos); // NOLINT(cert-err34-c)
+
+    /*
+    // Eat all other inputs, until the response begins
+    char c;
+    while((c = (int)getchar()) != '\033');*/
+
+    scanf("[%d;%dR", ypos, xpos); // NOLINT(cert-err34-c)
 }
 
 void saveCursorLocation(){

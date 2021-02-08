@@ -18,5 +18,6 @@ int intsize(int x);
 int longsize(long x);
 void moveCursor(char key);
 void terminalCommand(char *input);
+void changeStringArrayCapacity(char ***text, long count, long *capacity, long delta);
 
 #endif //COURSEWORK2_LIBRARY_H

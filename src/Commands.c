@@ -3,6 +3,7 @@
 
 #include "Terminal.h"
 #include "TextHandler.h"
+#include "ChangeLog.h"
 #include "Library.h"
 #include "definitions.h"
 
@@ -13,9 +14,9 @@ char *parseArgument(char **string, int spaceSeparated);
 int doSet(char *pointer);
 int doSwap(char *pointer);
 
-void initializeCommands(){
+void initCommands(){
     // Make sure command is a null pointer
-    free(command);
+    //free(command);
 
     // Allocate new command buffer and set up variables and null-terminators
     command = calloc(256, sizeof(char));
@@ -31,6 +32,13 @@ void initializeCommands(){
     terminalCommand("2K");
 }
 
+void quitCommands(){
+    free(command);
+
+    unloadText();
+    unloadChange();
+}
+
 int commands(){
     char first = command[1];
 
@@ -42,7 +50,7 @@ int commands(){
             return QUIT;
 
         case 'a':
-            return 0;
+            return -1;
 
         case 'i':
             return 0;
@@ -66,20 +74,25 @@ int executeCommand(){
                 return QUIT;
 
             case SAVE:
-                writeFile(NULL, False);
+                saveChangeFile();
+                writeTextFile(NULL, False);
                 return SAVE;
 
             case SET:
+                addCommand(command);
                 return doSet(&command[3]);
 
             case SWAP:
+                addCommand(command);
                 return doSwap(&command[4]);
 
             default:
                 return -1;
         }
     }
-    return -100;
+
+
+    return 0;
 }
 
 // Insert a new character at the cursor position
@@ -185,8 +198,6 @@ char *parseArgument(char **string, int spaceSeparated){
         return NULL;
     }
 
-
-
     long arglen = 0;
     if(spaceSeparated){
         arglen += (long)strcspn(*string, " \n\r\0");
@@ -194,7 +205,7 @@ char *parseArgument(char **string, int spaceSeparated){
         arglen += (long)strlen(*string) + 1;
     }
 
-    char *arg = malloc(sizeof(char) * arglen);
+    char *arg = malloc(sizeof(char) * arglen + 1);
 
     memccpy(arg, *string, sizeof(char), arglen);
 
@@ -229,6 +240,9 @@ int doSet(char *pointer){
     // Update rendered text
     printText();
 
+    // Do not free line, because that is used for the line in the text
+    free(pos);
+
     return 0;
 }
 
@@ -244,6 +258,9 @@ int doSwap(char *pointer){
 
     // Update rendered text
     printText();
+
+    free(posA);
+    free(posB);
 
     return 0;
 }

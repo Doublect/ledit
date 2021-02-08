@@ -142,6 +142,33 @@ Coursework2/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/build
 .PHONY : Coursework2/fast
 
+ChangeLog.o: ChangeLog.c.o
+
+.PHONY : ChangeLog.o
+
+# target to build an object file
+ChangeLog.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/ChangeLog.c.o
+.PHONY : ChangeLog.c.o
+
+ChangeLog.i: ChangeLog.c.i
+
+.PHONY : ChangeLog.i
+
+# target to preprocess a source file
+ChangeLog.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/ChangeLog.c.i
+.PHONY : ChangeLog.c.i
+
+ChangeLog.s: ChangeLog.c.s
+
+.PHONY : ChangeLog.s
+
+# target to generate assembly for a file
+ChangeLog.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Coursework2.dir/build.make CMakeFiles/Coursework2.dir/ChangeLog.c.s
+.PHONY : ChangeLog.c.s
+
 Commands.o: Commands.c.o
 
 .PHONY : Commands.o
@@ -340,6 +367,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... Coursework2"
+	@echo "... ChangeLog.o"
+	@echo "... ChangeLog.i"
+	@echo "... ChangeLog.s"
 	@echo "... Commands.o"
 	@echo "... Commands.i"
 	@echo "... Commands.s"

@@ -1,7 +1,8 @@
 #include<stdio.h>
 #include <unistd.h>
-#include "Terminal.h"
+//#include "Terminal.h"
 //#include "Library.h"
+#include "ChangeLog.h"
 #include <stdlib.h>
 //#include "Reader.h"
 
@@ -18,7 +19,7 @@ int main(int argc, char *argv[]) {
         }
     }*/
 
-    putchar('\n');
+/*    putchar('\n');
     while (1) {
         char c = getchar();
         //read(STDIN_FILENO, &c, 1);
@@ -34,7 +35,7 @@ int main(int argc, char *argv[]) {
 
         //printf("%c %d\n", c, c);
     }
-
+*/
     quit();
 
     return 0;

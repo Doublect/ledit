@@ -23,12 +23,11 @@ int readTextFile(char *filepath, char *(*(*filecontentsptr)), long *fileContents
     *fileContentsCapacity = 32;
 
     //Set pointer to start
-    fclose(fptr);
-    fptr = fopen(filepath, "r");
+    fseek(fptr, 0, SEEK_SET);
 
 
     // Count number of lines
-    while((c = fgetc(fptr)) != EOF){
+    while((c = (char)fgetc(fptr)) != EOF){
         if(c == '\n' || c == '\0'){
             if(*linecount >= *fileContentsCapacity)
                 *fileContentsCapacity += 32;
@@ -66,8 +65,7 @@ int readTextFile(char *filepath, char *(*(*filecontentsptr)), long *fileContents
         }
     }
 
-    fclose(fptr);
-    fptr = fopen(filepath, "r");
+    fseek(fptr, 0, SEEK_SET);
 
     for(long k = 0; k < *linecount; k++){
         (*linecapacity)[k] = (((*linelength)[k] / 16) + 1) * 16;
@@ -97,20 +95,87 @@ int readTextFile(char *filepath, char *(*(*filecontentsptr)), long *fileContents
 }
 
 
-int writeTextFile(char *filepath, char *(*(*filecontentsptr)), long *fileContentsCapacity, const long *linecount, long **linelength, long **linecapacity){
+int readFromFile(char *filepath, char ***filecontents, long *linecount, long *capacity){
+    FILE *fptr;
+
+    fptr = fopen(filepath, "r");
+
+    if(fptr == NULL){ //No such file
+        fprintf(stderr,"ERROR 401");
+        return 401;
+    }
+
+    char c;
+
+    // linecount stores the size of the array to be allocated for storing the string pointers
+    *linecount = 0;
+
+
+    // Count number of lines
+    while((c = (char)fgetc(fptr)) != EOF && c != '\0' ){
+        if(c == '\n'){
+            (*linecount)++;
+        }
+    }
+
+    rewind(fptr);
+
+    *capacity = *linecount + 32;
+
+    // Allocate array for storing the strings and their length
+    *filecontents = calloc(*capacity, sizeof(char *));
+
+    for(long i = 0; i < *linecount; i++){
+
+        // Store current position of file pointer
+        long position = ftell(fptr);
+
+        long j = 1;
+        while((c = (char)fgetc(fptr)) != '\n' && c != '\0') {
+            j++;
+        }
+
+        fseek(fptr, position, SEEK_SET);
+
+        char* string = malloc(sizeof(char) * (j + 1));
+
+        if(fgets(string, j + 1, fptr) == NULL) break;
+        //if(fscanf(fptr, "%s", string) == EOF) break;
+        fprintf(stderr, "R: %s, len: %ld", string, j + 1);
+        // Replace new line with 0
+        string[strcspn(string, "\n")] = '\0';
+
+        (*filecontents)[i] = string;
+    }
+
+    fclose(fptr);
+
+    return 0;
+}
+
+int writeToFile(char *filepath, char ***filecontents, const long linecount){
     FILE *fptr;
 
     fptr = fopen(filepath, "w");
 
     
     if(fptr == NULL){ //Can't create file
-        fprintf(stderr,"ERROR 402");
+        fprintf(stderr,"ERROR 402: While opening file: %s\n", filepath);
         return 402;
     }
 
-    for(long linenum = 0; linenum < *linecount; linenum++){
+    for(long linenum = 0; linenum < linecount; linenum++){
+
+        char *string = (*filecontents)[linenum];
+
+        // Replace null with newline
+        //string[strlen(string)] = '\n';
+        //long nullpos = strcspn(string, "\0");
+        string[strcspn(string, "\0")] = '\n';
+
         // Output the line
-        fprintf(fptr, "%s\n", (*filecontentsptr)[linenum]);
+        fprintf(fptr, "%s", string);
+        fprintf(stderr, "W: %s", string);
     }
 
     fclose(fptr);

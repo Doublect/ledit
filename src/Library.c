@@ -1,25 +1,8 @@
-#include <unistd.h> //STDOUt_FILENO, write
 #include <stdio.h>
-//Defined in features.h (<- unistd.h)
-//#define __USE_POSIX199309
-//#define _POSIX_C_SOURCE 199309L
-
-//#ifdef WIN32
-//#include <windows.h>
-//#elif _POSIX_C_SOURCE >= 199309L
-#include <time.h>   // for nanosleep
-//#else
-//#include <unistd.h> // for usleep
-//#endif
+#include <stdlib.h>
+#include <string.h>
 
 #include "definitions.h"
-
-//Print null-terminated string
-void strprint(char * str){
-    for(; *str; str++){
-        write(STDOUT_FILENO, str, 1);
-    }
-}
 
 int isNumber(char c){
     if(c >= '0' && c <= '9'){
@@ -29,8 +12,9 @@ int isNumber(char c){
 }
 
 int isNumberStr(char *c){
-    for(; *c; c++){
-        if(!isNumber(*c)){
+    int len = (int)strlen(c);
+    for(int i = 0; i < len; i++){
+        if(!isNumber(c[i])){
             return False;
         }
     }
@@ -40,10 +24,12 @@ int isNumberStr(char *c){
 //Limited to size 10, because of int
 int strtoint(char *str){
     int ans = 0;
-    for(int i = 0; i < 10 && *str; str++, i++){
-        if(isNumber(*str)){
+    int len = (int)strlen(str);
+
+    for(int i = 0; i < 10 && i < len; i++){
+        if(isNumber(str[i])){
             ans *= 10;
-            ans += *str - '0';
+            ans += str[i] - '0';
         }
     }
     return ans;
@@ -108,4 +94,33 @@ void moveCursor(char key){
 
 void terminalCommand(char *input){
     printf("\033[%s", input);
+}
+
+void changeStringArrayCapacity(char ***text, long count, long *capacity, long delta) {
+    if(delta == 0) return;
+
+    // Make sure we don't have negative number of lines
+    if(delta + *capacity < 0) {
+        delta = -*capacity;
+    }
+
+    char **newtext = calloc(*capacity + delta, sizeof(char *));
+    char **oldtext = *text;
+    // Copy over the lines, make sure to only copy the number of elements we need
+    long copyAmount = (((*capacity + delta) < count) ? *capacity + delta : count);
+
+    for(long i = 0; i < copyAmount; i++){
+        newtext[i] = oldtext[i];
+    }
+
+    // Free strings which are less than the copied
+    for(long i = copyAmount; i < count; i++){
+        free(oldtext[i]);
+    }
+
+    // Update pointer
+    *text = newtext;
+
+    // Update *capacity
+    *capacity += delta;
 }

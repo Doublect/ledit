@@ -1,4 +1,3 @@
-#include<unistd.h>     //STDIN_FILENO
 #include<stdio.h>
 
 #include "Library.h"
@@ -11,18 +10,6 @@ void clearScreen(){
 
 void clearLine(){
     printf("\033[2K");
-}
-
-// Fills the area with spaces which are formatted inversely, leaves cursor at position
-void printSpace(int startX, int startY, int endX, int endY){
-    if(startX > endX || startY > endY)
-        return;
-
-    for(int y = startY; y <= endY; y++){
-        printf("\033[%d;%dH", y, startX); //Jump to the row we're drawing over
-
-        printf("%*c\r", startX - endX + 1, ' ');
-    }
 }
 
 void printHeadLine(struct PointInt *screenSize){

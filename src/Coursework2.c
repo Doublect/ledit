@@ -1,34 +1,45 @@
 #include <stdio.h>
-#include <unistd.h>
 
 #include "Terminal.h"
 #include "Commands.h"
 #include "TextHandler.h"
+#include "ChangeLog.h"
 #include "definitions.h"
+
+
+int quit(){
+    int exitsignal = 0;
+
+    if((exitsignal = quitTerminal())) return exitsignal;
+
+    quitCommands();
+
+    return 0;
+}
 
 int main(int argc, char *argv[]){
 
     int exitsignal = 0;
-    if(argc == 2)
+    if(argc == 2) {
         readFile(argv[1]);
-        
-    //setvbuf(stdout, NULL, _IONBF, 0);
+        initChange(argv[1]);
+    }
 
     if((exitsignal = initTerminal())) return exitsignal;
 
-    initializeCommands();
+    initCommands();
 
     initSignal();
 
     while(1) {
-        char c = getchar();
+        char c = (char)getchar();
 
         //arrow key detection: https://stackoverflow.com/questions/10463201/getch-and-arrow-codes
         //cursor movement: https://stackoverflow.com/questions/26423537/how-to-position-the-input-text-cursor-in-c
         if (c == '\033') { // if the first value is esc
-            c = getchar();
+            c = (char)getchar();
             if (c == '[') { // catch escape sequence
-                c = getchar();
+                c = (char)getchar();
                 arrowKeyHandler(c);
             }
         } else if(c == 127) { // If backspace
@@ -38,15 +49,13 @@ int main(int argc, char *argv[]){
 
             if(signal == QUIT) break;
 
-            initializeCommands();
+            initCommands();
         } else {
             insertCharacter(c);
         }
     }
 
-    quit();
-
-    return 0;
+    return quit();
 }
 
 
