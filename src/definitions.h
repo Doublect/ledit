@@ -21,6 +21,7 @@
 #define SWAP 9110
 #define INSERT 9120
 #define DELETE 9200
+#define MOVE 9300
 
 #define NOTNUMWARN 700
 

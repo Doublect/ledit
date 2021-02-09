@@ -1,4 +1,6 @@
-/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src
--- Configuring done
--- Generating done
--- Build files have been written to: /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/cmake-build-debug
+"C:\Program Files\JetBrains\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - NMake Makefiles" C:\Personal\University\cs132\Coursework2\src
+CMake Error at CMakeLists.txt:1 (cmake_minimum_required):
+  CMake 3.19 or higher is required.  You are running version 3.17.3
+
+
+-- Configuring incomplete, errors occurred!

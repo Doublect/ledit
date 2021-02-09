@@ -76,6 +76,18 @@ struct PointInt *getScreenSize(){
     return &screenSize;
 }
 
+void moveScreenTo(long line, long col){
+    int contentRows = screenSize.y - 2;
+    screenPos.y = line - (contentRows / 2);
+    if(screenPos.y < 0) screenPos.y = 0;
+
+    if(col != -1) {
+        int contentCols = screenSize.x - 4;
+        screenPos.x = col - (contentCols / 2);
+        if (screenPos.x < 0) screenPos.x = 0;
+    }
+}
+
 int initTerminal(){
 
     if(setTerminal()) return 301;

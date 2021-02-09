@@ -18,6 +18,7 @@ int doInsert(char *pointer);
 int doSave(char *pointer);
 int doDelete(char *pointer);
 int doRemove(char *pointer);
+int moveScreen(char *pointer);
 
 void initCommands(){
     // Make sure command is a null pointer
@@ -73,6 +74,9 @@ int commands(){
             if(length > 1 && command[2] == 'w')
                 return SWAP;
             return SET;
+
+        case 'm':
+            return MOVE;
 
         default:
             return NOFUNC;
@@ -154,6 +158,15 @@ int executeCommand(){
                 }
                 break;
 
+            case MOVE:
+                if(strlen(&command[0]) >= 4) {
+                    signal = moveScreen(&command[3]);
+                    if(signal) return signal;
+
+                    // Update rendered text
+                    printText();
+                }
+                break;
             default:
                 return -1;
         }
@@ -414,7 +427,7 @@ int doInsert(char *pointer) {
     return 0;
 }
 
-int doDelete(char *pointer){
+int doDelete(char *pointer) {
     char *posStart, *posEnd;
 
     if((posStart = parseArgument(&pointer, True)) == NULL) return NOARG;
@@ -430,3 +443,22 @@ int doDelete(char *pointer){
     return 0;
 }
 
+int moveScreen(char *pointer) {
+    char *posY, *posX;
+    long row, col;
+
+    if((posY = parseArgument(&pointer, True)) == NULL) return NOARG;
+    if((posX = parseArgument(&pointer, True)) == NULL) col = -1;
+
+    if(!isNumberStr(posY) || (col != -1 && !isNumberStr(posX))) return NOTNUMWARN;
+
+    row = strtolong(posY);
+    if(col != -1) col = strtolong(posX);
+
+    moveScreenTo(row, col);
+
+    free(posX);
+    free(posY);
+
+    return 0;
+}

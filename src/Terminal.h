@@ -10,6 +10,7 @@ void printHead();
 void printText();
 void printCommand(char *command);
 struct PointInt *getScreenSize();
+void moveScreenTo(long line, long col);
 void arrowKeyHandler(char key);
 
 #endif //COURSEWORK2_TERMINAL_H

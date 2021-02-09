@@ -8,31 +8,25 @@
 
 /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/ChangeLog.h
 
-/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/FileIO.h
-
-/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Library.h
-
-/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Renderer.c
-stdio.h
--
-Library.h
-/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Library.h
-TextHandler.h
-/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/TextHandler.h
-ChangeLog.h
-/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/ChangeLog.h
-
-/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/TextHandler.c
+/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Commands.c
 stdlib.h
 -
 string.h
 -
-FileIO.h
-/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/FileIO.h
+Terminal.h
+/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Terminal.h
+TextHandler.h
+/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/TextHandler.h
+ChangeLog.h
+/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/ChangeLog.h
 Library.h
 /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Library.h
 definitions.h
 /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/definitions.h
+
+/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Library.h
+
+/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Terminal.h
 
 /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/TextHandler.h
 

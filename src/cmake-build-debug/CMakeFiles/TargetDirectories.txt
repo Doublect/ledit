@@ -1,3 +1,0 @@
-/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/cmake-build-debug/CMakeFiles/edit_cache.dir
-/mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/cmake-build-debug/CMakeFiles/Coursework2.dir
