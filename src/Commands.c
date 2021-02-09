@@ -11,6 +11,7 @@ static char* command;
 static int capacity, length, cursor;
 
 char *parseArgument(char **string, int spaceSeparated);
+int doOpen(char *pointer);
 int doSet(char *pointer);
 int doSwap(char *pointer);
 int doInsert(char *pointer);
@@ -47,6 +48,9 @@ int commands(){
     char first = command[1];
 
     switch (first) {
+        case 'o':
+            return OPEN;
+
         case 'w':
             return SAVE;
 
@@ -80,6 +84,10 @@ int executeCommand(){
         int value = commands();
 
         switch (value) {
+            case OPEN:
+                if(strlen(&command[0]) >= 4)
+                    return doOpen(&command[3]);
+
             case QUIT:
                 return QUIT;
 
@@ -262,6 +270,28 @@ char *parseArgument(char **string, int spaceSeparated){
     return arg;
 }
 
+int doOpen(char *pointer){
+    char *path;
+
+    // We don't care whether we get a NULL or a value
+    path = parseArgument(&pointer, False);
+
+    if(path == NULL || !strcmp(path, "")) return NOPATH;
+
+    // Make sure there is no text loaded
+    unloadText();
+    unloadChange();
+
+    readFile(path);
+    initChange(path);
+
+    // Update rendered text
+    printHead();
+    printText();
+
+    return 0;
+}
+
 int doSet(char *pointer){
 
     // Get the pos of the line which needs changing
@@ -333,8 +363,11 @@ int doSave(char *pointer){
     // We don't care whether we get a NULL or a value
     path = parseArgument(&pointer, False);
 
-    if(path != NULL){
+    if(path != NULL && strcmp(path, "")){
         loadFilePath(path);
+    } else {
+        free(path);
+        path = NULL;
     }
 
     int signal;

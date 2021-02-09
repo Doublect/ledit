@@ -5,6 +5,7 @@ int initTerminal();
 int quitTerminal();
 void initSignal();
 void moveCursorTo(int x, int y);
+void printHead();
 void printText();
 void printCommand(char *command);
 struct PointInt *getScreenSize();

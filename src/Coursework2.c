@@ -11,9 +11,9 @@
 int quit(){
     int exitsignal = 0;
 
-    if((exitsignal = quitTerminal())) return exitsignal;
-
     quitCommands();
+
+    if((exitsignal = quitTerminal())) return exitsignal;
 
     return 0;
 }

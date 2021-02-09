@@ -56,9 +56,6 @@ void unloadText(){
 }
 
 void writeTextFile(char *path, int bunload){
-
-    fprintf(stderr, "%s", path);
-
     if(path == NULL){
         writeToFile(filePath, &fileContents, lineCount);
     } else {

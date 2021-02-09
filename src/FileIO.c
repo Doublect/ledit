@@ -169,7 +169,10 @@ int writeToFile(char *filepath, char ***filecontents, const long linecount){
 
         char *string = (*filecontents)[linenum];
 
-        if(string == NULL) return fprintf(fptr, "\n");
+        if(string == NULL) {
+            fprintf(fptr, "\n");
+            continue;
+        }
 
         // Replace null with newline
         //string[strlen(string)] = '\n';

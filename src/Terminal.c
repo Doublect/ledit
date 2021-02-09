@@ -174,6 +174,12 @@ void initSignal(){
     sigaction(SIGQUIT, &sigHandler, NULL);
 }
 
+void printHead(){
+    saveCursorLocation();
+    printHeadLine(&screenSize);
+    loadCursorLocation();
+}
+
 void printText(){
     saveCursorLocation();
     printTextLines(&screenPos, &screenSize);

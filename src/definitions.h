@@ -11,9 +11,10 @@
 #define FILEDELETEERR 9403
 #define NOPATH 9404
 
-#define QUIT 9000
-#define SAVE 9010
-#define REMOVE 9020
+#define OPEN 9000
+#define QUIT 9010
+#define SAVE 9020
+#define REMOVE 9030
 #define SET 9100
 #define SWAP 9110
 #define INSERT 9120
