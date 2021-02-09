@@ -1,0 +1,2 @@
+W: :s 2 rsd
+text3.txt
