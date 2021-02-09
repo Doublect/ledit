@@ -9,7 +9,7 @@
 #include "Library.h"
 #include "definitions.h"
 
-static char *filePath;
+static char *filePath = NULL;
 static long *lineLength, *lineCapacity; //stores the positions of lines on screenPos
 static long lineCount, fileContentsCapacity;
 static char **fileContents;
@@ -25,7 +25,7 @@ char *getLine(long pos, long offset){
         return (fileContents[pos] + offset);
     }
 
-    return &empty;
+    return NULL;
 }
 
 void readFile(char *path){
@@ -56,10 +56,14 @@ void unloadText(){
 }
 
 void writeTextFile(char *path, int bunload){
+
+    fprintf(stderr, "%s", path);
+
     if(path == NULL){
         writeToFile(filePath, &fileContents, lineCount);
     } else {
         writeToFile(path, &fileContents, lineCount);
+        filePath = path;
     }
 
     if(bunload){
@@ -99,10 +103,33 @@ void swapLines(long posA, long posB){
     char *tempLine = fileContents[posA - 1];
 
     setLine(fileContents[posB - 1], posA, lineLength[posB - 1]);
-    printf("Hello\n");
 
     setLine(tempLine, posB, tempLineLength);
+}
 
+void deleteLines(long posStart, long posEnd){
+    if(posStart >= lineCount) return;
+
+    if(posEnd < posStart) posEnd = posStart;
+
+    posStart--;
+    posEnd--;
+
+    long range = posEnd - posStart + 1;
+
+    for(long i = posStart; i < lineCount; i++){
+
+        if(i >= posStart && i <= posEnd)
+            free(fileContents[i]);
+
+        if(i + range > lineCount){
+            fileContents[i] = NULL;
+        } else {
+            fileContents[i] = fileContents[i + range];
+        }
+    }
+
+    lineCount -= range;
 }
 
 void changeLineCount(long delta) {
@@ -129,4 +156,14 @@ void changeLineCount(long delta) {
     lineLength = newlineLength;
 
     lineCount += delta;
+}
+
+void removeFile(char *path){
+    if(path != NULL && strcmp(path, "")) {
+        deleteFile(path);
+    } else {
+        if (filePath == NULL)
+            return;
+        deleteFile(filePath);
+    }
 }

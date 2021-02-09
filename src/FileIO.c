@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "Library.h"
 #include "definitions.h"
 
 //Returns contents of a textfile
@@ -13,7 +14,7 @@ int readTextFile(char *filepath, char *(*(*filecontentsptr)), long *fileContents
 
     if(fptr == NULL){ //No such file
         fprintf(stderr,"ERROR 401");
-        return 401;
+        return NOFILE;
     }
 
     char c;
@@ -102,7 +103,7 @@ int readFromFile(char *filepath, char ***filecontents, long *linecount, long *ca
 
     if(fptr == NULL){ //No such file
         fprintf(stderr,"ERROR 401");
-        return 401;
+        return NOFILE;
     }
 
     char c;
@@ -161,12 +162,14 @@ int writeToFile(char *filepath, char ***filecontents, const long linecount){
     
     if(fptr == NULL){ //Can't create file
         fprintf(stderr,"ERROR 402: While opening file: %s\n", filepath);
-        return 402;
+        return FILECREATEERR;
     }
 
     for(long linenum = 0; linenum < linecount; linenum++){
 
         char *string = (*filecontents)[linenum];
+
+        if(string == NULL) return fprintf(fptr, "\n");
 
         // Replace null with newline
         //string[strlen(string)] = '\n';
@@ -175,10 +178,15 @@ int writeToFile(char *filepath, char ***filecontents, const long linecount){
 
         // Output the line
         fprintf(fptr, "%s", string);
-        fprintf(stderr, "W: %s", string);
+        //fprintf(stderr, "W: %s", string);
     }
 
     fclose(fptr);
 
     return 0;
+}
+
+int deleteFile(char *path){
+    if (remove(path) == 0 && remove(getHiddenFilePath(path)) == 0) return 0;
+    return FILEDELETEERR;
 }

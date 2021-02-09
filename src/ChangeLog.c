@@ -1,39 +1,24 @@
 #include <stdlib.h>
 #include <string.h>
-#include <libgen.h> //basename
 #include <limits.h>
 
 #include "FileIO.h"
 #include "Library.h"
-
+#include "definitions.h"
 static char **history;
-static char *changelogPath;
+static char *changelogPath = NULL;
 static long capacity = 0, count = 0;
 static long currentCommand = 0;
 
 void loadChangeFile();
 
 void loadFilePath(char *filepath){
-    char *basec = strdup(filepath);
-    char *dirc = strdup(filepath);
-    char *filename = basename(basec);
-    char *directoryname = dirname(dirc);
 
-    char *path = calloc(PATH_MAX, sizeof(char));
-    char *hidden = "/.";
-
-    strcat(path, directoryname);
-    strcat(path, hidden);
-    strcat(path, filename);
-
-    changelogPath = path;
-
-    free(basec);
-    free(dirc);
+    // If the path is empty
+    changelogPath = getHiddenFilePath(filepath);
 }
 
 void initChange(char *filepath){
-
     loadFilePath(filepath);
 
     loadChangeFile();
@@ -59,10 +44,15 @@ void addCommand(char *change){
     currentCommand++;
 }
 
+void addCurrentCommand(char *change){
+    if(currentCommand == count)
+        addCommand(change);
+}
+
 char *getCurrentCommand(){
     long commandlen = (long)strlen(history[currentCommand]);
 
-    char *output = malloc(sizeof(char) * commandlen);
+    char *output = malloc(sizeof(char) * (commandlen + 32));
 
     memcpy(output, history[currentCommand], commandlen);
 
@@ -87,8 +77,11 @@ char *getNextCommand(){
     return NULL;
 }
 
-void saveChangeFile(){
+int saveChangeFile(){
+    if(changelogPath == NULL) return NOPATH;
     writeToFile(changelogPath, &history, count);
+
+    return 0;
 }
 
 void loadChangeFile(){

@@ -19,5 +19,6 @@ int longsize(long x);
 void moveCursor(char key);
 void terminalCommand(char *input);
 void changeStringArrayCapacity(char ***text, long count, long *capacity, long delta);
+char *getHiddenFilePath(char *filepath);
 
 #endif //COURSEWORK2_LIBRARY_H

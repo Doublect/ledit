@@ -4,6 +4,7 @@
 CMakeFiles/Coursework2.dir/ChangeLog.c.o: /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/ChangeLog.c
 CMakeFiles/Coursework2.dir/ChangeLog.c.o: /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/FileIO.h
 CMakeFiles/Coursework2.dir/ChangeLog.c.o: /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Library.h
+CMakeFiles/Coursework2.dir/ChangeLog.c.o: /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/definitions.h
 
 CMakeFiles/Coursework2.dir/Commands.c.o: /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/ChangeLog.h
 CMakeFiles/Coursework2.dir/Commands.c.o: /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Commands.c
@@ -20,6 +21,7 @@ CMakeFiles/Coursework2.dir/Coursework2.c.o: /mnt/nvme0n1p4/Personal/University/c
 CMakeFiles/Coursework2.dir/Coursework2.c.o: /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/definitions.h
 
 CMakeFiles/Coursework2.dir/FileIO.c.o: /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/FileIO.c
+CMakeFiles/Coursework2.dir/FileIO.c.o: /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Library.h
 CMakeFiles/Coursework2.dir/FileIO.c.o: /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/definitions.h
 
 CMakeFiles/Coursework2.dir/Library.c.o: /mnt/nvme0n1p4/Personal/University/cs132/Coursework2/src/Library.c

@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <libgen.h> //basename
+#include <limits.h>
 
 #include "definitions.h"
 
@@ -123,4 +125,26 @@ void changeStringArrayCapacity(char ***text, long count, long *capacity, long de
 
     // Update *capacity
     *capacity += delta;
+}
+
+char *getHiddenFilePath(char *filepath){
+    if(!strcmp(filepath, "")) return NULL;
+
+
+    char *basec = strdup(filepath);
+    char *dirc = strdup(filepath);
+    char *filename = basename(basec);
+    char *directoryname = dirname(dirc);
+
+    char *path = calloc(PATH_MAX, sizeof(char));
+    char *hidden = "/.";
+
+    strcat(path, directoryname);
+    strcat(path, hidden);
+    strcat(path, filename);
+
+    free(basec);
+    free(dirc);
+
+    return path;
 }

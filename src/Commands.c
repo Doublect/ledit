@@ -13,6 +13,9 @@ static int capacity, length, cursor;
 char *parseArgument(char **string, int spaceSeparated);
 int doSet(char *pointer);
 int doSwap(char *pointer);
+int doSave(char *pointer);
+int doDelete(char *pointer);
+int doRemove(char *pointer);
 
 void initCommands(){
     // Make sure command is a null pointer
@@ -49,6 +52,12 @@ int commands(){
         case 'q':
             return QUIT;
 
+        case 'd':
+            return DELETE;
+
+        case 'r':
+            return REMOVE;
+
         case 'a':
             return -1;
 
@@ -74,13 +83,24 @@ int executeCommand(){
                 return QUIT;
 
             case SAVE:
-                saveChangeFile();
-                writeTextFile(NULL, False);
+                doSave(&command[3]);
                 return SAVE;
+
+            case DELETE:
+                addCommand(command);
+                if(strlen(&command[0]) >= 4)
+                    return doDelete(&command[3]);
+
+            case REMOVE:
+                if(strlen(&command[0]) >= 4)
+                    return doRemove(&command[3]);
+                else return doRemove(NULL);
 
             case SET:
                 addCommand(command);
-                return doSet(&command[3]);
+                if(strlen(&command[0]) >= 4)
+                    return doSet(&command[3]);
+                return -1;
 
             case SWAP:
                 addCommand(command);
@@ -144,6 +164,22 @@ void insertCharacter(char c){
     arrowKeyHandler('C');
 }
 
+/*
+void getHistory(int bnext){
+    char *temp = (bnext) ? getNextChange() : getPreviousChange();
+
+    if(temp == NULL) return;
+
+    // Save currently written command (if it has content and is the newest)
+    if(length > 1)
+        addCurrentCommand(command);
+    else deleteNotCurrentCommand(command);
+
+    command = temp;
+
+
+}
+*/
 void deleteCharacter(){
     // If at the start of the buffer, then return
     if(cursor == 0) return;
@@ -261,6 +297,51 @@ int doSwap(char *pointer){
 
     free(posA);
     free(posB);
+
+    return 0;
+}
+
+int doSave(char *pointer){
+    char *path;
+
+    // We don't care whether we get a NULL or a value
+    path = parseArgument(&pointer, False);
+
+    if(path != NULL){
+        loadFilePath(path);
+    }
+
+    int signal;
+
+    if((signal = saveChangeFile())) return signal;
+    writeTextFile(path, False);
+
+    return 0;
+}
+
+int doDelete(char *pointer){
+    char *posStart, *posEnd;
+
+    if((posStart = parseArgument(&pointer, True)) == NULL) return NOARG;
+    if((posEnd = parseArgument(&pointer, True)) == NULL) posEnd = posStart;
+
+    if(!isNumberStr(posStart) || !isNumberStr(posEnd)) return NOTNUMWARN;
+
+    deleteLines(strtolong(posStart), strtolong(posEnd));
+
+    // Update rendered text
+    printText();
+
+    free(posStart);
+    free(posEnd);
+
+    return 0;
+}
+
+int doRemove(char *pointer){
+    char *path = parseArgument(&pointer, True);
+
+    removeFile(path);
 
     return 0;
 }

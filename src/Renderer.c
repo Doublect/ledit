@@ -38,7 +38,13 @@ void printTextLines(struct Point *screenPos, struct PointInt *screenSize){
         int spaceCount = newLineNumberSize - longsize(row + screenPos->y + 1) - 1;
         int textSpace = screenSize->x - (newLineNumberSize + 1);
 
-        printf("%ld%*c|\033[0K %.*s\r", row + screenPos->y + 1, spaceCount, ' ', textSpace, getLine((row + screenPos->y), screenPos->x));
+        char *string = getLine(row + screenPos->y, screenPos->x);
+
+        if(string == NULL){
+            printf("%ld%*c|\033[0K\r", row + screenPos->y + 1, spaceCount, ' ');
+        } else {
+            printf("%ld%*c|\033[0K %.*s\r", row + screenPos->y + 1, spaceCount, ' ', textSpace, string);
+        }
 
         moveCursor('B');
     }

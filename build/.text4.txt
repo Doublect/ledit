@@ -1,4 +1,0 @@
-:s 1 sdas
-:s 2 adesujdfhs
-:s 3 fruiefhsdj
-:d 1 2

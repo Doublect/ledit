@@ -6,12 +6,19 @@
 
 #define NOARG 9400
 #define NOFUNC 9410
+#define NOFILE 9401
+#define FILECREATEERR 9402
+#define FILEDELETEERR 9403
+#define NOPATH 9404
 
 #define QUIT 9000
 #define SAVE 9010
+#define REMOVE 9020
 #define SET 9100
 #define SWAP 9110
+#define DELETE 9200
 
 #define NOTNUMWARN 700
+
 
 #endif //COURSEWORK2_DEFINITIONS_H

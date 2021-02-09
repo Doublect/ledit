@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <signal.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "Renderer.h"
 #include "Library.h"
@@ -52,6 +53,16 @@ int setTerminal(){
     tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 
     return 0;
+}
+
+int setCREAD(int bon){
+    if(bon) {
+        newt.c_cflag |= CREAD;
+    } else {
+        newt.c_cflag &= ~CREAD;
+    }
+
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 }
 
 void updateScreenSize(){
@@ -108,15 +119,21 @@ int quitTerminal(){
 
 void getCursorPosition(int *xpos, int *ypos){
 
+    // Disables input recieving
+    setCREAD(False);
+
     // VT100 request to print cursor position, the response has the format \033[row;columnR
     printf("\033[6n");
 
-    /*
+
     // Eat all other inputs, until the response begins
     char c;
-    while((c = (int)getchar()) != '\033');*/
+    while((c = (char)getchar()) != '\033');
 
     scanf("[%d;%dR", ypos, xpos); // NOLINT(cert-err34-c)
+
+    // Enable input
+    setCREAD(True);
 }
 
 void saveCursorLocation(){
@@ -129,7 +146,6 @@ void loadCursorLocation(){
 }
 
 void WINCHSignal(int signal){
-
     updateScreenSize();
 
     // If window has changed, redraw

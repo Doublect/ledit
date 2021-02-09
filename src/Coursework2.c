@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "Terminal.h"
 #include "Commands.h"
@@ -20,6 +21,8 @@ int quit(){
 int main(int argc, char *argv[]){
 
     int exitsignal = 0;
+    int signal;
+
     if(argc == 2) {
         readFile(argv[1]);
         initChange(argv[1]);
@@ -32,30 +35,37 @@ int main(int argc, char *argv[]){
     initSignal();
 
     while(1) {
+        //fgets(input, sizeof input, stdin);
+
         char c = (char)getchar();
+
 
         //arrow key detection: https://stackoverflow.com/questions/10463201/getch-and-arrow-codes
         //cursor movement: https://stackoverflow.com/questions/26423537/how-to-position-the-input-text-cursor-in-c
-        if (c == '\033') { // if the first value is esc
-            c = (char)getchar();
-            if (c == '[') { // catch escape sequence
+        switch (c) {
+            case -1: // When changing terminal screen size, a character with value '-1' was being inputted
+                break;
+            case '\033':
                 c = (char)getchar();
-                arrowKeyHandler(c);
-            }
-        } else if(c == 127) { // If backspace
-            deleteCharacter();
-        } else if(c == 13) { // If enter
-            int signal = executeCommand();
+                if (c == '[') { // catch escape sequence
+                    c = (char)getchar();
+                    arrowKeyHandler(c);
+                }
+                continue;
+            case 127: // Backspace
+                deleteCharacter();
+                break;
+            case 13: // Enter
+                signal = executeCommand();
+                if (signal == QUIT) return quit();
 
-            if(signal == QUIT) break;
-
-            initCommands();
-        } else {
-            insertCharacter(c);
+                initCommands();
+                break;
+            default:
+                insertCharacter(c);
+                break;
         }
     }
-
-    return quit();
 }
 
 
