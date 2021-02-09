@@ -3,6 +3,7 @@
 
 void readFile(char *path);
 char *getLine(long pos, long offset);
+long getLineCount();
 void unloadText();
 void writeTextFile(char *path, int bunload);
 void setLine(char *string, long pos, long len);

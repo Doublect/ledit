@@ -4,6 +4,7 @@
 int initTerminal();
 int quitTerminal();
 void initSignal();
+void toggleChangeLog();
 void moveCursorTo(int x, int y);
 void printHead();
 void printText();

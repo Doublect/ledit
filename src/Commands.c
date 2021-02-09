@@ -57,14 +57,14 @@ int commands(){
         case 'q':
             return QUIT;
 
-        case 'd':
-            return DELETE;
-
         case 'r':
             return REMOVE;
 
-        case 'a':
-            return -1;
+        case 'c':
+            return TGLCHANGELOG;
+
+        case 'd':
+            return DELETE;
 
         case 'i':
             return INSERT;
@@ -82,7 +82,7 @@ int commands(){
 int executeCommand(){
     if(command[0] == ':'){
         int value = commands();
-
+        int signal;
         switch (value) {
             case OPEN:
                 if(strlen(&command[0]) >= 4)
@@ -96,34 +96,68 @@ int executeCommand(){
                 return SAVE;
 
             case DELETE:
-                addCommand(command);
-                if(strlen(&command[0]) >= 4)
-                    return doDelete(&command[3]);
+                if(strlen(&command[0]) >= 4) {
+                    signal = doDelete(&command[3]);
+                    if(signal) return signal;
+
+                    addCommand(command, getLineCount());
+
+                    // Update rendered text
+                    printText();
+                }
+                break;
 
             case REMOVE:
                 if(strlen(&command[0]) >= 4)
                     return doRemove(&command[3]);
                 else return doRemove(NULL);
 
+            case TGLCHANGELOG:
+                toggleChangeLog();
+                // Update rendered text
+                printText();
+                break;
+
             case SET:
-                addCommand(command);
-                if(strlen(&command[0]) >= 4)
-                    return doSet(&command[3]);
-                return -1;
+                if(strlen(&command[0]) >= 4) {
+                    signal = doSet(&command[3]);
+                    if(signal) return signal;
+
+                    addCommand(command, getLineCount());
+
+                    // Update rendered text
+                    printText();
+                }
+                break;
 
             case SWAP:
-                addCommand(command);
-                return doSwap(&command[4]);
+                if(strlen(&command[0]) >= 4) {
+                    signal = doSwap(&command[4]);
+                    if(signal) return signal;
+
+                    addCommand(command, getLineCount());
+
+                    // Update rendered text
+                    printText();
+                }
+                break;
 
             case INSERT:
-                if(strlen(&command[0]) >= 4)
-                    doInsert(&command[3]);
+                if(strlen(&command[0]) >= 4) {
+                    signal = doInsert(&command[3]);
+                    if(signal) return signal;
+
+                    addCommand(command, getLineCount());
+
+                    // Update rendered text
+                    printText();
+                }
+                break;
 
             default:
                 return -1;
         }
     }
-
 
     return 0;
 }
@@ -292,6 +326,35 @@ int doOpen(char *pointer){
     return 0;
 }
 
+int doSave(char *pointer){
+    char *path;
+
+    // We don't care whether we get a NULL or a value
+    path = parseArgument(&pointer, False);
+
+    if(path != NULL && strcmp(path, "")){
+        loadFilePath(path);
+    } else {
+        free(path);
+        path = NULL;
+    }
+
+    int signal;
+
+    if((signal = saveChangeFile())) return signal;
+    writeTextFile(path, False);
+
+    return 0;
+}
+
+int doRemove(char *pointer){
+    char *path = parseArgument(&pointer, True);
+
+    removeFile(path);
+
+    return 0;
+}
+
 int doSet(char *pointer){
 
     // Get the pos of the line which needs changing
@@ -306,9 +369,6 @@ int doSet(char *pointer){
 
     // Change the stored text values
     setLine(line, lineNum, -1);
-
-    // Update rendered text
-    printText();
 
     // Do not free line, because that is used for the line in the text
     free(pos);
@@ -348,32 +408,8 @@ int doInsert(char *pointer) {
     // Do the insertion
     insertLine(line, lineNum, -1);
 
-    // Update rendered text
-    printText();
-
     // Do not free line, because that is used for the line in the text
     free(pos);
-
-    return 0;
-}
-
-int doSave(char *pointer){
-    char *path;
-
-    // We don't care whether we get a NULL or a value
-    path = parseArgument(&pointer, False);
-
-    if(path != NULL && strcmp(path, "")){
-        loadFilePath(path);
-    } else {
-        free(path);
-        path = NULL;
-    }
-
-    int signal;
-
-    if((signal = saveChangeFile())) return signal;
-    writeTextFile(path, False);
 
     return 0;
 }
@@ -388,19 +424,9 @@ int doDelete(char *pointer){
 
     deleteLines(strtolong(posStart), strtolong(posEnd));
 
-    // Update rendered text
-    printText();
-
     free(posStart);
     free(posEnd);
 
     return 0;
 }
 
-int doRemove(char *pointer){
-    char *path = parseArgument(&pointer, True);
-
-    removeFile(path);
-
-    return 0;
-}

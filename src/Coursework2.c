@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 
 #include "Terminal.h"
 #include "Commands.h"
@@ -37,21 +36,24 @@ int main(int argc, char *argv[]){
     while(1) {
         //fgets(input, sizeof input, stdin);
 
-        char c = (char)getchar();
+        char c = (char) getchar();
 
+        if(c == '\033') {
+            c = (char) getchar();
+            if (c == '[') { // catch escape sequence
+                c = (char) getchar();
+                arrowKeyHandler(c);
+                continue;
+            } else if(c == '\033') // If someone is spamming escape, eat those inputs
+                continue;
+
+        }
 
         //arrow key detection: https://stackoverflow.com/questions/10463201/getch-and-arrow-codes
         //cursor movement: https://stackoverflow.com/questions/26423537/how-to-position-the-input-text-cursor-in-c
         switch (c) {
             case -1: // When changing terminal screen size, a character with value '-1' was being inputted
                 break;
-            case '\033':
-                c = (char)getchar();
-                if (c == '[') { // catch escape sequence
-                    c = (char)getchar();
-                    arrowKeyHandler(c);
-                }
-                continue;
             case 127: // Backspace
                 deleteCharacter();
                 break;

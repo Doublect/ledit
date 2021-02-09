@@ -96,7 +96,7 @@ int readTextFile(char *filepath, char *(*(*filecontentsptr)), long *fileContents
 }
 
 
-int readFromFile(char *filepath, char ***filecontents, long *linecount, long *capacity){
+int readChangeFile(char *filepath, char ***filecontents, long *linecount, long *capacity, long **lineCountTracker){
     FILE *fptr;
 
     fptr = fopen(filepath, "r");
@@ -125,8 +125,14 @@ int readFromFile(char *filepath, char ***filecontents, long *linecount, long *ca
 
     // Allocate array for storing the strings and their length
     *filecontents = calloc(*capacity, sizeof(char *));
+    *lineCountTracker = calloc(*capacity, sizeof(long));
+
+    char a[20];
 
     for(long i = 0; i < *linecount; i++){
+        fscanf(fptr, "%s | ", a);
+
+        (*lineCountTracker)[i] = strtolong(a);
 
         // Store current position of file pointer
         long position = ftell(fptr);
@@ -154,7 +160,42 @@ int readFromFile(char *filepath, char ***filecontents, long *linecount, long *ca
     return 0;
 }
 
-int writeToFile(char *filepath, char ***filecontents, const long linecount){
+int writeChangeFile(char *writeTextFile, char ***filecontents, const long linecount, long **lineCountTracker){
+    FILE *fptr;
+
+    fptr = fopen(writeTextFile, "w");
+
+
+    if(fptr == NULL){ //Can't create file
+        fprintf(stderr, "ERROR 402: While opening file: %s\n", writeTextFile);
+        return FILECREATEERR;
+    }
+
+    for(long i = 0; i < linecount; i++){
+
+        char *string = (*filecontents)[i];
+
+        if(string == NULL) {
+            fprintf(fptr, "\n");
+            continue;
+        }
+
+        // Replace null with newline
+        //string[strlen(string)] = '\n';
+        //long nullpos = strcspn(string, "\0");
+        string[strcspn(string, "\0")] = '\n';
+
+        // Output the line
+        fprintf(fptr, "%ld | %s", (*lineCountTracker)[i], string);
+        //fprintf(stderr, "W: %s", string);
+    }
+
+    fclose(fptr);
+
+    return 0;
+}
+
+int writeToTextFile(char *filepath, char ***filecontents, const long linecount){
     FILE *fptr;
 
     fptr = fopen(filepath, "w");

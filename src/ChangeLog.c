@@ -5,15 +5,16 @@
 #include "FileIO.h"
 #include "Library.h"
 #include "definitions.h"
+
 static char **history;
+static long *linecountTracker, *length;
 static char *changelogPath = NULL;
 static long capacity = 0, count = 0;
 static long currentCommand = 0;
 
-void loadChangeFile();
+int loadChangeFile();
 
 void loadFilePath(char *filepath){
-
     // If the path is empty
     changelogPath = getHiddenFilePath(filepath);
 }
@@ -23,6 +24,8 @@ void initChange(char *filepath){
 
     loadChangeFile();
     currentCommand = count;
+
+    length = calloc(count, sizeof(long));
 }
 
 void unloadChange(){
@@ -31,22 +34,51 @@ void unloadChange(){
     for(int i = 0; i < capacity; i++){
         free(history[i]);
     }
+
+    free(linecountTracker);
+    free(length);
 }
 
-void addCommand(char *change){
+void addCommand(char *change, long linecount){
     if(capacity <= (count + 1)){
         changeStringArrayCapacity(&history, count, &capacity, 32);
+
+        long *temp = malloc(capacity * sizeof(long));
+        long *templen = calloc(capacity, sizeof(long));
+
+        for(int i = 0; i < count; i++){
+            temp[i] = linecountTracker[i];
+            templen[i] = length[i];
+        }
+
+        free(linecountTracker);
+        free(length);
+
+        linecountTracker = temp;
+        length = templen;
     }
 
+
+
     history[count] = change;
+    linecountTracker[count] = linecount;
 
     count++;
     currentCommand++;
 }
 
-void addCurrentCommand(char *change){
-    if(currentCommand == count)
-        addCommand(change);
+char *getCommand(long pos, long offset, long *lineCount){
+    if(pos >= count) return NULL;
+
+    if(length[pos] == 0){
+        length[pos] = (long)strlen(history[pos]);
+    }
+
+    if(offset >= length[pos]) return NULL;
+
+    *lineCount = linecountTracker[pos];
+
+    return &(history[pos][offset]);
 }
 
 char *getCurrentCommand(){
@@ -79,11 +111,14 @@ char *getNextCommand(){
 
 int saveChangeFile(){
     if(changelogPath == NULL) return NOPATH;
-    writeToFile(changelogPath, &history, count);
 
+    writeChangeFile(changelogPath, &history, count, &linecountTracker);
     return 0;
 }
 
-void loadChangeFile(){
-    readFromFile(changelogPath, &history, &count, &capacity);
+int loadChangeFile(){
+    if(changelogPath == NULL) return NOPATH;
+
+    readChangeFile(changelogPath, &history, &count, &capacity, &linecountTracker);
+    return 0;
 }

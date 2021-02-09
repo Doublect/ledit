@@ -9,14 +9,13 @@
 #include "Renderer.h"
 #include "Library.h"
 #include "Commands.h"
+#include "definitions.h"
 
 //Based upon: https://stackoverflow.com/questions/1022957/getting-terminal-width-in-c
 
-#define True 1
-#define False 0
-
 static struct termios oldt, newt;
 static int savedX,  savedY;
+static int bChangeLog = False;
 
 static struct PointInt screenSize = {0, 0};
 static struct Point screenPos = {0, 0};
@@ -55,7 +54,7 @@ int setTerminal(){
     return 0;
 }
 
-int setCREAD(int bon){
+void setCREAD(int bon){
     if(bon) {
         newt.c_cflag |= CREAD;
     } else {
@@ -89,7 +88,7 @@ int initTerminal(){
 
     //printf("\r");
 
-    printTextLines(&screenPos, &screenSize);
+    printTextLines(&screenPos, &screenSize, bChangeLog);
 
     return 0;
 }
@@ -99,6 +98,10 @@ int resetTerminal(){
     tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
 
     return 0;
+}
+
+void toggleChangeLog(){
+    bChangeLog = !bChangeLog;
 }
 
 void moveCursorTo(int x, int y){
@@ -150,7 +153,7 @@ void WINCHSignal(int signal){
 
     // If window has changed, redraw
     saveCursorLocation();
-    redrawScreen(&screenPos, &screenSize);
+    redrawScreen(&screenPos, &screenSize, bChangeLog);
     loadCursorLocation();
 
     int x, y;
@@ -182,7 +185,7 @@ void printHead(){
 
 void printText(){
     saveCursorLocation();
-    printTextLines(&screenPos, &screenSize);
+    printTextLines(&screenPos, &screenSize, bChangeLog);
     loadCursorLocation();
 }
 

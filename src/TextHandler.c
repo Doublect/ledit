@@ -1,8 +1,5 @@
-#include<stdio.h>
 #include <stdlib.h>
 //File type-check: https://stackoverflow.com/questions/11276521/determine-file-type-in-c
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <string.h>
 
 #include "FileIO.h"
@@ -14,7 +11,7 @@ static long *lineLength, *lineCapacity; //stores the positions of lines on scree
 static long lineCount, fileContentsCapacity;
 static char **fileContents;
 
-static char empty = '\0'; // Empty string
+static char *empty = "\0"; // Empty string
 
 void changeLineCount(long delta);
 
@@ -22,10 +19,16 @@ char *getLine(long pos, long offset){
 
     if(fileContentsCapacity > pos && offset < lineLength[pos] && lineCount > pos) {
         //printf("%d-%d\n\r", offset, lineLength[pos]);
-        return (fileContents[pos] + offset);
+        return &(fileContents[pos][offset]);
     }
+    if(pos < lineCount)
+        return empty;
 
     return NULL;
+}
+
+long getLineCount(){
+    return lineCount;
 }
 
 void readFile(char *path){
@@ -57,9 +60,9 @@ void unloadText(){
 
 void writeTextFile(char *path, int bunload){
     if(path == NULL){
-        writeToFile(filePath, &fileContents, lineCount);
+        writeToTextFile(filePath, &fileContents, lineCount);
     } else {
-        writeToFile(path, &fileContents, lineCount);
+        writeToTextFile(path, &fileContents, lineCount);
         filePath = path;
     }
 
@@ -98,6 +101,9 @@ void insertLine(char *string, long pos, long len){
         long delta = 32;
         changeStringArrayCapacity(&fileContents, lineCount, &fileContentsCapacity, delta);
     }
+
+    if(lineCount < pos)
+        return setLine(string, pos, len);
 
     changeLineCount(1);
 

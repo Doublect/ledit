@@ -15,6 +15,8 @@
 #define QUIT 9010
 #define SAVE 9020
 #define REMOVE 9030
+#define TGLCHANGELOG 9040
+
 #define SET 9100
 #define SWAP 9110
 #define INSERT 9120
