@@ -13,6 +13,7 @@ static int capacity, length, cursor;
 char *parseArgument(char **string, int spaceSeparated);
 int doSet(char *pointer);
 int doSwap(char *pointer);
+int doInsert(char *pointer);
 int doSave(char *pointer);
 int doDelete(char *pointer);
 int doRemove(char *pointer);
@@ -62,7 +63,7 @@ int commands(){
             return -1;
 
         case 'i':
-            return 0;
+            return INSERT;
 
         case 's':
             if(length > 1 && command[2] == 'w')
@@ -105,6 +106,10 @@ int executeCommand(){
             case SWAP:
                 addCommand(command);
                 return doSwap(&command[4]);
+
+            case INSERT:
+                if(strlen(&command[0]) >= 4)
+                    doInsert(&command[3]);
 
             default:
                 return -1;
@@ -263,7 +268,6 @@ int doSet(char *pointer){
     char *pos;
     if((pos = parseArgument(&pointer, True)) == NULL) return NOARG;
 
-    //printf("%d\n", isNumberStr(pos));
     if(!isNumberStr(pos)) return NOTNUMWARN;
     int lineNum = strtoint(pos);
 
@@ -297,6 +301,28 @@ int doSwap(char *pointer){
 
     free(posA);
     free(posB);
+
+    return 0;
+}
+
+int doInsert(char *pointer) {
+    // Get the pos of the line which needs changing
+    char *pos;
+    if((pos = parseArgument(&pointer, True)) == NULL) return NOARG;
+    if(!isNumberStr(pos)) return NOTNUMWARN;
+    int lineNum = strtoint(pos);
+
+    // Get the actual content of the line
+    char *line = parseArgument(&pointer, False);
+
+    // Do the insertion
+    insertLine(line, lineNum, -1);
+
+    // Update rendered text
+    printText();
+
+    // Do not free line, because that is used for the line in the text
+    free(pos);
 
     return 0;
 }

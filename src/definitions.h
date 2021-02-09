@@ -16,6 +16,7 @@
 #define REMOVE 9020
 #define SET 9100
 #define SWAP 9110
+#define INSERT 9120
 #define DELETE 9200
 
 #define NOTNUMWARN 700

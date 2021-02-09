@@ -82,7 +82,7 @@ void setLine(char *string, long pos, long len){
     }
 
     if(lineCount < pos){
-        changeLineCount(pos);
+        changeLineCount(pos - lineCount);
     }
 
     if(len == -1)
@@ -92,6 +92,30 @@ void setLine(char *string, long pos, long len){
 
     lineLength[pos - 1] = (long)len;
     lineCapacity[pos - 1] =  (long)len;
+}
+
+void insertLine(char *string, long pos, long len){
+
+    // If there isn't enough capacity to add a string, then expand it
+    if(fileContentsCapacity < lineCount + 1){
+        long delta = 32;
+        changeStringArrayCapacity(&fileContents, lineCount, &fileContentsCapacity, delta);
+    }
+
+    changeLineCount(1);
+
+    if(len == -1)
+        len = (long)strlen(string);
+
+    for(long i = lineCount - 1; i >= pos; i--){
+        fileContents[i] = fileContents[i - 1];
+        lineLength[i] = lineLength[i - 1];
+        lineCapacity[i] = lineCapacity[i - 1];
+    }
+
+    fileContents[pos - 1] = string;
+    lineCapacity[pos - 1] = len;
+    lineLength[pos - 1] = len;
 }
 
 void swapLines(long posA, long posB){
